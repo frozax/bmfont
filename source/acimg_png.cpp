@@ -1,6 +1,6 @@
 /*
    AngelCode Tool Box Library
-   Copyright (c) 2007 Andreas Jönsson
+   Copyright (c) 2007-2015 Andreas Jonsson
   
    This software is provided 'as-is', without any express or implied 
    warranty. In no event will the authors be held liable for any 
@@ -21,7 +21,7 @@
    3. This notice may not be removed or altered from any source 
       distribution.
   
-   Andreas Jönsson
+   Andreas Jonsson
    andreas@angelcode.com
 */
 
@@ -45,8 +45,8 @@ int SavePng(const char *filename, Image &image)
 	}
 
 
-	png_structp png;
-	png_infop   info;
+	png_structp png = 0;
+	png_infop   info = 0;
 	
 	FILE *f = fopen(filename, "wb");
 	if( f == 0 )
@@ -65,7 +65,7 @@ int SavePng(const char *filename, Image &image)
 	if( info == 0 )
 	{
 		fclose(f);
-		png_destroy_write_struct(&png, png_infopp_NULL);
+		png_destroy_write_struct(&png, &info);
 		return E_ERROR;
 	}
 

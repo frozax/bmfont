@@ -20,7 +20,7 @@ The program and any possible upgrades can be found at www.AngelCode.com. The aut
 
 Changes
 -------------------------------
-1.14 beta - 2014/06/17
+1.14 beta - 2015/12/12
 - Fixed crash with large fonts when Windows API incorrectly reported negative width for glyphs.
 - Improved handling of out-of-memory conditions.
 - Fixed crash that could occur when exporting Unicode characters above 0x10000 with kerning pairs.
@@ -33,6 +33,9 @@ Changes
 - Fixed application freeze when generating very large fonts.
 - The source code is now available under the zlib license.
 - Converted application to compile for Windows with Unicode to better support file and font names with international characters.
+- Updated libpng to 1.6.19.
+- Updated zlib to 1.2.8.
+- Updated libjpeg to 9a.
 
 1.13 - 2012/08/12
 - Added option to export fonts using fixed cell heights for easier post processing.
