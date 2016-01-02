@@ -1,6 +1,6 @@
 /*
    AngelCode Bitmap Font Generator
-   Copyright (c) 2004-2014 Andreas Jonsson
+   Copyright (c) 2004-2016 Andreas Jonsson
   
    This software is provided 'as-is', without any express or implied 
    warranty. In no event will the authors be held liable for any 
@@ -56,10 +56,11 @@ const UnicodeSubset_t UnicodeSubsets[] = {
 {"Syriac"                                        , 0x0700  , 0x074F},
 {"Arabic Supplement"                             , 0x0750  , 0x077F},
 {"Thaana"                                        , 0x0780  , 0x07BF},
-{"N'Ko"                                          , 0x07C0  , 0x07FF},
-{"Samaritan"                                     , 0x0800  , 0x083F},
-{"Mandaic"                                       , 0x0840  , 0x085F},
-{"(0x0860 - 0x08FF)"                             , 0x0860  , 0x08FF},
+{"N'Ko"                                          , 0x07C0  , 0x07FF}, // 5.0
+{"Samaritan"                                     , 0x0800  , 0x083F}, // 5.2
+{"Mandaic"                                       , 0x0840  , 0x085F}, // 6.0
+{"(0x0860 - 0x089F)"                             , 0x0860  , 0x089F},
+{"Arabic Extended A"                             , 0x08A0  , 0x08FF}, // 6.1
 {"Devanagari"                                    , 0x0900  , 0x097F},
 {"Bengali"                                       , 0x0980  , 0x09FF},
 {"Gurmukhi"                                      , 0x0A00  , 0x0A7F},
@@ -89,22 +90,22 @@ const UnicodeSubset_t UnicodeSubsets[] = {
 {"Tagbanwa"                                      , 0x1760  , 0x177F},
 {"Khmer"                                         , 0x1780  , 0x17FF},
 {"Mongolian"                                     , 0x1800  , 0x18AF},
-{"Unified Canadian Aboriginal Syllabics Extended", 0x18B0  , 0x18FF},
+{"Unified Canadian Aboriginal Syllabics Extended", 0x18B0  , 0x18FF}, // 5.2
 {"Limbu"                                         , 0x1900  , 0x194F},
 {"Tai Le"                                        , 0x1950  , 0x197F},
 {"New Tai Lue"                                   , 0x1980  , 0x19DF},
 {"Khmer Symbols"                                 , 0x19E0  , 0x19FF},
 {"Buginese"                                      , 0x1A00  , 0x1A1F},
-{"Tai Tham"                                      , 0x1A20  , 0x1AAF},
-{"(0x1AB0 - 0x1AFF)"                             , 0x1AB0  , 0x1AFF},
-{"Balinese"                                      , 0x1B00  , 0x1B7F},
-{"Sundanese"                                     , 0x1B80  , 0x1BBF},
-{"Batak"                                         , 0x1BC0  , 0x1BFF},
-{"Lepcha"                                        , 0x1C00  , 0x1C4F},
-{"Ol Chiki"                                      , 0x1C50  , 0x1C7F},
+{"Tai Tham"                                      , 0x1A20  , 0x1AAF}, // 5.2
+{"Combining Diacritical Marks Extended"          , 0x1AB0  , 0x1AFF}, // 7.0
+{"Balinese"                                      , 0x1B00  , 0x1B7F}, // 5.0
+{"Sundanese"                                     , 0x1B80  , 0x1BBF}, // 5.1
+{"Batak"                                         , 0x1BC0  , 0x1BFF}, // 6.0
+{"Lepcha"                                        , 0x1C00  , 0x1C4F}, // 5.1
+{"Ol Chiki"                                      , 0x1C50  , 0x1C7F}, // 5.1
 {"(0x1C80 - 0x1CBF)"                             , 0x1C80  , 0x1CBF},
-{"Sundanese Supplement"                          , 0x1CC0  , 0x1CCF},
-{"Vedic Extensions"                              , 0x1CD0  , 0x1CFF},
+{"Sundanese Supplement"                          , 0x1CC0  , 0x1CCF}, // 6.1
+{"Vedic Extensions"                              , 0x1CD0  , 0x1CFF}, // 5.2
 {"Phonetic Extensions"                           , 0x1D00  , 0x1D7F},
 {"Phonetic Extensions Supplement"                , 0x1D80  , 0x1DBF},
 {"Combining Diacritical Marks Supplement"        , 0x1DC0  , 0x1DFF},
@@ -135,12 +136,12 @@ const UnicodeSubset_t UnicodeSubsets[] = {
 {"Supplemental Mathematical Operators"           , 0x2A00  , 0x2AFF},
 {"Miscellaneous Symbols and Arrows"              , 0x2B00  , 0x2BFF},
 {"Glagolitic"                                    , 0x2C00  , 0x2C5F},
-{"Latin Extended C"                              , 0x2C60  , 0x2C7F},
-{"Coptic"                                        , 0x2C80  , 0x2CFF}, 
+{"Latin Extended C"                              , 0x2C60  , 0x2C7F}, // 5.0
+{"Coptic"                                        , 0x2C80  , 0x2CFF},
 {"Georgian Supplement"                           , 0x2D00  , 0x2D2F},
 {"Tifinagh"                                      , 0x2D30  , 0x2D7F},
 {"Ethiopic Extended"                             , 0x2D80  , 0x2DDF},
-{"Cyrillic Extended A"                           , 0x2DE0  , 0x2DFF},
+{"Cyrillic Extended A"                           , 0x2DE0  , 0x2DFF}, // 5.1
 {"Supplemental Punctuation"                      , 0x2E00  , 0x2E7F},
 {"CJK Radicals Supplement"                       , 0x2E80  , 0x2EFF},
 {"KangXi Radicals"                               , 0x2F00  , 0x2FDF},
@@ -162,32 +163,33 @@ const UnicodeSubset_t UnicodeSubsets[] = {
 {"CJK Unified Ideographs"                        , 0x4E00  , 0x9FFF},
 {"Yi"                                            , 0xA000  , 0xA48F},
 {"Yi Radicals"                                   , 0xA490  , 0xA4CF},
-{"Lisu"                                          , 0xA4D0  , 0xA4FF},
-{"Vai"                                           , 0xA500  , 0xA59F},
+{"Lisu"                                          , 0xA4D0  , 0xA4FF}, // 5.2
+{"Vai"                                           , 0xA500  , 0xA59F}, // 5.1
 {"(0xA600 - 0xA63F)"                             , 0xA600  , 0xA63F},
-{"Cyrillic Extended B"                           , 0xA640  , 0xA69F},
-{"Bamum"                                         , 0xA6A0  , 0xA6FF},
+{"Cyrillic Extended B"                           , 0xA640  , 0xA69F}, // 5.1
+{"Bamum"                                         , 0xA6A0  , 0xA6FF}, // 5.2
 {"Modifier Tone Letters"                         , 0xA700  , 0xA71F},
-{"Latin Extended D"                              , 0xA720  , 0xA7FF},
+{"Latin Extended D"                              , 0xA720  , 0xA7FF}, // 5.0
 {"Syloti Nagri"                                  , 0xA800  , 0xA82F},
-{"Common Indic Number Forms"                     , 0xA830  , 0xA83F},
-{"Phags-Pa"                                      , 0xA840  , 0xA87F},
-{"Saurashtra"                                    , 0xA880  , 0xA8DF},
-{"Devanagari Extended"                           , 0xA8E0  , 0xA8FF},
-{"Kayah Li"                                      , 0xA900  , 0xA92F},
-{"Rejang"                                        , 0xA930  , 0xA95F},
-{"Hangul Jamo Extended A"                        , 0xA960  , 0xA97F},
-{"Javanese"                                      , 0xA980  , 0xA9DF},
-{"(0xA9E0 - 0xA9FF)"                             , 0xA9E0  , 0xA9FF},
-{"Cham"                                          , 0xAA00  , 0xAA5F},
-{"Myanmar Extended A"                            , 0xAA60  , 0xAA7F},
-{"Tai Viet"                                      , 0xAA80  , 0xAADF},
-{"Meetei Mayek Extensions"                       , 0xAAE0  , 0xAAFF},
-{"Ethiopic Extended A"                           , 0xAB00  , 0xAB2F},
-{"(0xAB30 - 0xABBF)"                             , 0xAB30  , 0xABBF},
-{"Meetei Mayek"                                  , 0xABC0  , 0xABFF},
+{"Common Indic Number Forms"                     , 0xA830  , 0xA83F}, // 5.2
+{"Phags-Pa"                                      , 0xA840  , 0xA87F}, // 5.0
+{"Saurashtra"                                    , 0xA880  , 0xA8DF}, // 5.1
+{"Devanagari Extended"                           , 0xA8E0  , 0xA8FF}, // 5.2
+{"Kayah Li"                                      , 0xA900  , 0xA92F}, // 5.1
+{"Rejang"                                        , 0xA930  , 0xA95F}, // 5.1
+{"Hangul Jamo Extended A"                        , 0xA960  , 0xA97F}, // 5.2
+{"Javanese"                                      , 0xA980  , 0xA9DF}, // 5.2
+{"Myanmar Extended B"                            , 0xA9E0  , 0xA9FF}, // 7.0
+{"Cham"                                          , 0xAA00  , 0xAA5F}, // 5.1
+{"Myanmar Extended A"                            , 0xAA60  , 0xAA7F}, // 5.2
+{"Tai Viet"                                      , 0xAA80  , 0xAADF}, // 5.2
+{"Meetei Mayek Extensions"                       , 0xAAE0  , 0xAAFF}, // 6.1
+{"Ethiopic Extended A"                           , 0xAB00  , 0xAB2F}, // 6.0
+{"Latin Extended E"                              , 0xAB30  , 0xAB6F}, // 7.0
+{"Cherokee Supplement"                           , 0xAB70  , 0xABBF}, // 8.0
+{"Meetei Mayek"                                  , 0xABC0  , 0xABFF}, // 5.2
 {"Hangul"                                        , 0xAC00  , 0xD7AF},
-{"Hangul Jamo Extended B"                        , 0xD7B0  , 0xD7FF},
+{"Hangul Jamo Extended B"                        , 0xD7B0  , 0xD7FF}, // 5.2
 {"(High Surrogates)"                             , 0xD800  , 0xDBFF},
 {"(Low Surrogates)"                              , 0xDC00  , 0xDFFF},
 {"Private Use Area"                              , 0xE000  , 0xF8FF},
@@ -198,7 +200,7 @@ const UnicodeSubset_t UnicodeSubsets[] = {
 {"Vertical Forms"                                , 0xFE10  , 0xFE1F},
 {"Combining Half Marks"                          , 0xFE20  , 0xFE2F},
 {"CJK Compatibility Forms"                       , 0xFE30  , 0xFE4F},
-{"Small Form Variants"                           , 0xFE50  , 0xFE6F}, 
+{"Small Form Variants"                           , 0xFE50  , 0xFE6F},
 {"Arabic Presentation Forms B"                   , 0xFE70  , 0xFEFF},
 {"Halfwidth and Fullwidth Forms"                 , 0xFF00  , 0xFFEF},
 {"Specials"                                      , 0xFFF0  , 0xFFFD},
@@ -209,79 +211,139 @@ const UnicodeSubset_t UnicodeSubsets[] = {
 {"Linear B Ideograms"                       , 0x10080 , 0x100FF},
 {"Aegean Numbers"                           , 0x10100 , 0x1013F},
 {"Ancient Greek Numbers"                    , 0x10140 , 0x1018F},
-{"Ancient Symbols"                          , 0x10190 , 0x101CF},
-{"Phaistos Disc"                            , 0x101D0 , 0x101FF},
+{"Ancient Symbols"                          , 0x10190 , 0x101CF}, // 5.1
+{"Phaistos Disc"                            , 0x101D0 , 0x101FF}, // 5.1
 {"(0x10200 - 0x1027F)"                      , 0x10200 , 0x1027F},
-{"Lycian"                                   , 0x10280 , 0x1029F},
-{"Carian"                                   , 0x102A0 , 0x102DF},
-{"(0x102E0 - 0x102FF)"                      , 0x102E0 , 0x102FF},
+{"Lycian"                                   , 0x10280 , 0x1029F}, // 5.1
+{"Carian"                                   , 0x102A0 , 0x102DF}, // 5.1
+{"Coptic Epact Numbers"                     , 0x102E0 , 0x102FF}, // 7.0
 {"Old Italic"                               , 0x10300 , 0x1032F},
-{"Gothic"                                   , 0x10330 , 0x1034F}, 
-{"(0x10350 - 0x1037F)"                      , 0x10350 , 0x1037F},
+{"Gothic"                                   , 0x10330 , 0x1034F},
+{"Old Permic"                               , 0x10350 , 0x1037F}, // 7.0
 {"Ugaritic"                                 , 0x10380 , 0x1039F},
 {"Old Persian"                              , 0x103A0 , 0x103DF},
 {"(0x103E0 - 0x103FF)"                      , 0x103E0 , 0x103FF},
-{"Deseret"                                  , 0x10400 , 0x1044F}, 
+{"Deseret"                                  , 0x10400 , 0x1044F},
 {"Shavian"                                  , 0x10450 , 0x1047F},
 {"Osmanya"                                  , 0x10480 , 0x104AF},
-{"(0x104B0 - 0x107FF)"                      , 0x104B0 , 0x107FF},
+{"(0x104B0 - 0x104FF)"                      , 0x104B0 , 0x104FF},
+{"Elbasan"                                  , 0x10500 , 0x1052F}, // 7.0
+{"Caucasian Albanian"                       , 0x10530 , 0x1056F}, // 7.0
+{"(0x10570 - 0x105FF)"                      , 0x10570 , 0x105FF},
+{"Linear A"                                 , 0x10600 , 0x1077F}, // 7.0
+{"(0x10780 - 0x107FF)"                      , 0x10780 , 0x107FF},
 {"Cypriot Syllabary"                        , 0x10800 , 0x1083F},
-{"Imperial Aramaic"                         , 0x10840 , 0x1085F},
-{"(0x10860 - 0x108FF)"                      , 0x10860 , 0x108FF},
-{"Phoenician"                               , 0x10900 , 0x1091F},
-{"Lydian"                                   , 0x10920 , 0x1093F},
-{"(0x10940 - 0x1099F)"                      , 0x10940 , 0x1099F},
-{"Meroitic Cursive"                         , 0x109A0 , 0x109FF},
+{"Imperial Aramaic"                         , 0x10840 , 0x1085F}, // 5.2
+{"Palmyrene"                                , 0x10860 , 0x1087F}, // 7.0
+{"Nabataean"                                , 0x10880 , 0x108AF}, // 7.0
+{"(0x108B0 - 0x108DF)"                      , 0x108B0 , 0x108DF},
+{"Hatran"                                   , 0x108E0 , 0x108FF}, // 8.0
+{"Phoenician"                               , 0x10900 , 0x1091F}, // 5.0
+{"Lydian"                                   , 0x10920 , 0x1093F}, // 5.1
+{"(0x10940 - 0x1097F)"                      , 0x10940 , 0x1097F},
+{"Meroitic Hieroglyphs"                     , 0x10980 , 0x1099F}, // 6.1
+{"Meroitic Cursive"                         , 0x109A0 , 0x109FF}, // 6.1
 {"Kharoshthi"                               , 0x10A00 , 0x10A5F},
-{"Old South Arabian"                        , 0x10A60 , 0x10A7F},
-{"(0x10A80 - 0x10AFF)"                      , 0x10A80 , 0x10AFF},
-{"Avestan"                                  , 0x10B00 , 0x10B3F},
-{"Inscriptional Parthian"                   , 0x10B40 , 0x10B5F},
-{"Inscriptional Pahlavi"                    , 0x10B60 , 0x10B7F},
-{"(0x10B80 - 0x10BFF)"                      , 0x10B80 , 0x10BFF},
-{"Old Turkic"                               , 0x10C00 , 0x10C4F},
-{"(0x10C50 - 0x10E5F)"                      , 0x10C50 , 0x10E5F},
-{"Rumi Numeral Symbols"                     , 0x10E60 , 0x10E7F},
-{"(0x10E60 - 0x110CF)"                      , 0x10E80 , 0x110CF},
-{"Sora Sompeng"                             , 0x110D0 , 0x110FF},
-{"Chakma"                                   , 0x11100 , 0x1114F},
-{"(0x11150 - 0x1117F)"                      , 0x11150 , 0x1117F},
-{"Sharada"                                  , 0x11180 , 0x111DF},
-{"(0x111E0 - 0x1167F)"                      , 0x111E0 , 0x1167F},
-{"Takri"                                    , 0x11680 , 0x116CF},
-{"(0x116D0 - 0x11FFF)"                      , 0x116D0 , 0x11FFF},
-{"Cuneiform"                                , 0x12000 , 0x123FF},
-{"Cuneiform Numbers and Punctuation"        , 0x12400 , 0x1247F},
-{"(0x12480 - 0x1CFFF)"                      , 0x12480 , 0x1CFFF},
+{"Old South Arabian"                        , 0x10A60 , 0x10A7F}, // 5.2
+{"Old North Arabian"                        , 0x10A80 , 0x10A9F}, // 7.0
+{"(0x10AA0 - 0x10ABF)"                      , 0x10AA0 , 0x10ABF},
+{"Manichaean"                               , 0x10AC0 , 0x10AFF}, // 7.0
+{"Avestan"                                  , 0x10B00 , 0x10B3F}, // 5.2
+{"Inscriptional Parthian"                   , 0x10B40 , 0x10B5F}, // 5.2
+{"Inscriptional Pahlavi"                    , 0x10B60 , 0x10B7F}, // 5.2
+{"Psalter Pahlavi"                          , 0x10B80 , 0x10BAF}, // 7.0
+{"(0x10BB0 - 0x10BFF)"                      , 0x10BB0 , 0x10BFF},
+{"Old Turkic"                               , 0x10C00 , 0x10C4F}, // 5.2
+{"(0x10C50 - 0x10C7F)"                      , 0x10C50 , 0x10C7F},
+{"Old Hungarian"                            , 0x10C80 , 0x10CFF}, // 8.0
+{"(0x10D00 - 0x10E5F)"                      , 0x10D00 , 0x10E5F}, 
+{"Rumi Numeral Symbols"                     , 0x10E60 , 0x10E7F}, // 5.2
+{"(0x10E60 - 0x10FFF)"                      , 0x10E80 , 0x10FFF},
+{"Brahmi"                                   , 0x11000 , 0x1107F}, // 6.0
+{"Kaithi"                                   , 0x11080 , 0x110CF}, // 5.2
+{"Sora Sompeng"                             , 0x110D0 , 0x110FF}, // 6.1
+{"Chakma"                                   , 0x11100 , 0x1114F}, // 6.1
+{"Mahajani"                                 , 0x11150 , 0x1117F}, // 7.0
+{"Sharada"                                  , 0x11180 , 0x111DF}, // 6.1
+{"Sinhala Archaic Numbers"                  , 0x111E0 , 0x111FF}, // 7.0
+{"Khojki"                                   , 0x11200 , 0x1124F}, // 7.0
+{"(0x11250 - 0x1127F)"                      , 0x11250 , 0x1127F},
+{"Multani"                                  , 0x11280 , 0x112AF}, // 8.0
+{"Khudawadi"                                , 0x112B0 , 0x112FF}, // 7.0
+{"Grantha"                                  , 0x11300 , 0x1137F}, // 7.0
+{"(0x11380 - 0x1147F)"                      , 0x11380 , 0x1147F},
+{"Tirhuta"                                  , 0x11480 , 0x114DF}, // 7.0
+{"(0x114E0 - 0x1157F)"                      , 0x114E0 , 0x1157F},
+{"Siddham"                                  , 0x11580 , 0x115FF}, // 7.0
+{"Modi"                                     , 0x11600 , 0x1165F}, // 7.0
+{"(0x11660 - 0x1167F)"                      , 0x11660 , 0x1167F},
+{"Takri"                                    , 0x11680 , 0x116CF}, // 6.1
+{"(0x116D0 - 0x116FF)"                      , 0x116D0 , 0x116FF},
+{"Ahom"                                     , 0x11700 , 0x1173F}, // 8.0
+{"(0x11740 - 0x1189F)"                      , 0x11740 , 0x1189F},
+{"Warang Citi"                              , 0x118A0 , 0x118FF}, // 7.0
+{"(0x11900 - 0x11ABF)"                      , 0x11900 , 0x11ABF},
+{"Pau Cin Hau"                              , 0x11AC0 , 0x11AFF}, // 7.0
+{"(0x11B00 - 0x11FFF)"                      , 0x11B00 , 0x11FFF},
+{"Cuneiform"                                , 0x12000 , 0x123FF}, // 5.0
+{"Cuneiform Numbers and Punctuation"        , 0x12400 , 0x1247F}, // 5.0
+{"Early Dynastic Cuneiform"                 , 0x12480 , 0x1254F}, // 8.0
+{"(0x12550 - 0x12FFF)"                      , 0x12550 , 0x12FFF},
+{"Egyptian Hieroglyphs"                     , 0x13000 , 0x1342F}, // 5.2
+{"(0x13430 - 0x143FF)"                      , 0x13430 , 0x143FF},
+{"Anatolian Hieroglyphs"                    , 0x14400 , 0x1467F}, // 8.0
+{"(0x14680 - 0x167FF)"                      , 0x14680 , 0x167FF},
+{"Bamum Supplement"                         , 0x16800 , 0x16A3D}, // 6.0
+{"Mro"                                      , 0x16A40 , 0x16A6F}, // 7.0
+{"(0x16A70 - 0x16ACF)"                      , 0x16A70 , 0x16ACF},
+{"Bassa Vah"                                , 0x16AD0 , 0x16AFF}, // 7.0
+{"Pahawh Hmong"                             , 0x16B00 , 0x16B8F}, // 7.0
+{"(0x16B90 - 0x16EFF)"                      , 0x16B90 , 0x16EFF},
+{"Miao"                                     , 0x16F00 , 0x16F9F}, // 6.1
+{"(0x16FA0 - 0x1AFFF)"                      , 0x16FA0 , 0x1AFFF},
+{"Kana Supplement"                          , 0x1B000 , 0x1B0FF}, // 6.0
+{"(0x1B100 - 0x1BBFF)"                      , 0x1B100 , 0x1BBFF},
+{"Duployan"                                 , 0x1BC00 , 0x1BC9F}, // 7.0
+{"Shorthand Format Controls"                , 0x1BCA0 , 0x1BCAF}, // 7.0
+{"(0x1BCB0 - 0x1CFFF)"                      , 0x1BCB0 , 0x1CFFF},
 {"Byzantine Musical Symbols"                , 0x1D000 , 0x1D0FF},
 {"Musical Symbols"                          , 0x1D100 , 0x1D1FF},
 {"Ancient Greek Musical Notation"           , 0x1D200 , 0x1D24F},
 {"(0x1D250 - 0x1D3FF)"                      , 0x1D250 , 0x1D2FF},
 {"Tai Xuan Jing Symbols"                    , 0x1D300 , 0x1D35F},
-{"Counting Rod Numerals"                    , 0x1D360 , 0x1D37F},
+{"Counting Rod Numerals"                    , 0x1D360 , 0x1D37F}, // 5.0
 {"(0x1D380 - 0x1D3FF)"                      , 0x1D380 , 0x1D3FF},
 {"Mathematical Alphanumeric Symbols"        , 0x1D400 , 0x1D7FF},
-{"(0x1D800 - 0x1EFFF)"                      , 0x1D800 , 0x1EFFF},
-{"Mahjong Tiles"                            , 0x1F000 , 0x1F02F},
-{"Domino Tiles"                             , 0x1F030 , 0x1F09F},
-{"Playing Cards"                            , 0x1F0A0 , 0x1F0FF},
-{"Enclosed Alphanumeric Supplement"         , 0x1F100 , 0x1F1FF},
-{"Enclosed Ideographic Supplement"          , 0x1F200 , 0x1F2FF},
-{"Miscellaneous Symbols and Pictographs"    , 0x1F300 , 0x1F5FF},
-{"Emoticons"                                , 0x1F600 , 0x1F64F},
-{"(0x1F650 - 0x1F67F)"                      , 0x1F650 , 0x1F67F},
-{"Transport and Map Symbols"                , 0x1F680 , 0x1F6FF},
-{"Alchemical Symbols"                       , 0x1F700 , 0x1F77F},
-{"(0x1F780 - 0x1FF7F)"                      , 0x1F780 , 0x1FF7F},
+{"Sutton SignWriting"                       , 0x1D800 , 0x1DAAF}, // 8.0
+{"(0x1DAB0 - 0x1E7FF)"                      , 0x1DAB0 , 0x1E7FF},
+{"Mende Kikakui"                            , 0x1E800 , 0x1E8DF}, // 7.0
+{"(0x1E8E0 - 0x1EDFF)"                      , 0x1E8E0 , 0x1EDFF},
+{"Arabic Mathematical Alphabetic Symbols"   , 0x1EE00 , 0x1EEFF}, // 6.1
+{"(0x1EF00 - 0x1EFFF)"                      , 0x1EF00 , 0x1EFFF},
+{"Mahjong Tiles"                            , 0x1F000 , 0x1F02F}, // 5.1
+{"Domino Tiles"                             , 0x1F030 , 0x1F09F}, // 5.1
+{"Playing Cards"                            , 0x1F0A0 , 0x1F0FF}, // 6.0
+{"Enclosed Alphanumeric Supplement"         , 0x1F100 , 0x1F1FF}, // 5.2
+{"Enclosed Ideographic Supplement"          , 0x1F200 , 0x1F2FF}, // 5.2
+{"Miscellaneous Symbols and Pictographs"    , 0x1F300 , 0x1F5FF}, // 6.0
+{"Emoticons"                                , 0x1F600 , 0x1F64F}, // 6.0
+{"Ornamental Dingbats"                      , 0x1F650 , 0x1F67F}, // 7.0
+{"Transport and Map Symbols"                , 0x1F680 , 0x1F6FF}, // 6.0
+{"Alchemical Symbols"                       , 0x1F700 , 0x1F77F}, // 6.0
+{"Geometric Shapes Extended"                , 0x1F780 , 0x1F7FF}, // 7.0
+{"Supplemental Arrows C"                    , 0x1F800 , 0x1F8FF}, // 7.0
+{"Supplemental Symbols and Pictographs"     , 0x1F900 , 0x1F9FF}, // 8.0
+{"(0x1FA00 - 0x1FF7F)"                      , 0x1FA00 , 0x1FF7F},
 {"Unassigned"                               , 0x1FF80 , 0x1FFFD},
 {"(Reserved)"                               , 0x1FFFE , 0x1FFFF},
 
 // Plane 2
 {"CJK Unified Ideographs Extension B"       , 0x20000 , 0x2A6DF},
 {"(0x2A6E0 - 0x2A6FF)"                      , 0x2A6E0 , 0x2A6FF},
-{"CJK Unified Ideographs Extension C"       , 0x2A700 , 0x2B73F},
-{"CJK Unified Ideographs Extension D"       , 0x2B740 , 0x2B81F},
-{"(0x2B820 - 0x2F7FF)"                      , 0x2B820 , 0x2F7FF},
+{"CJK Unified Ideographs Extension C"       , 0x2A700 , 0x2B73F}, // 5.2
+{"CJK Unified Ideographs Extension D"       , 0x2B740 , 0x2B81F}, // 6.0
+{"CJK Unified Ideographs Extension E"       , 0x2B820 , 0x2CEA1}, // 8.0
+{"(0x2CEA2 - 0x2F7FF)"                      , 0x2CEA2 , 0x2F7FF},
 {"CJK Compatibility Ideographs Supplement"  , 0x2F800 , 0x2FA1F}, 
 {"(0x2FA20 - 0x2FF7F)"                      , 0x2FA20 , 0x2FF7F},
 {"Unassigned"                               , 0x2FF80 , 0x2FFFD},
