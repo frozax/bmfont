@@ -1,6 +1,6 @@
 /*
    AngelCode Bitmap Font Generator
-   Copyright (c) 2004-2014 Andreas Jonsson
+   Copyright (c) 2004-2016 Andreas Jonsson
   
    This software is provided 'as-is', without any express or implied 
    warranty. In no event will the authors be held liable for any 
@@ -56,7 +56,7 @@ LRESULT CAbout::MsgProc(UINT msg, WPARAM wParam, LPARAM lParam)
 		urlLibPng.MakeUrl("http://www.libpng.org");
 		urlLibJpeg.MakeUrl("http://www.ijg.org");
 		urlZLib.MakeUrl("http://www.zlib.net");
-		urlSquish.MakeUrl("http://code.google.com/p/libsquish/");
+		urlSquish.MakeUrl("http://sourceforge.net/projects/libsquish/");
 		break;
 
 	case WM_COMMAND:
