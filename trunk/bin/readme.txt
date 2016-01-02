@@ -27,7 +27,6 @@ Changes
 - Fixed crash when command line argument -c was a relative path and the configuration included font file or image files.
 - Fixed crash when saving configuration file with added font file from the same directory.
 - Corrected the cell height when using fixed height and super-sampling.
-- Added support for Unicode 6.2.
 - Fixed compatibility with Windows XP.
 - Fixed scaling issues and cropping when using height scale with render from outline.
 - Fixed application freeze when generating very large fonts.
@@ -38,6 +37,7 @@ Changes
 - Updated libjpeg to 9a.
 - Updated libsquish to 1.13.
 - Fixed a problem with exporting glyphs for some international languages.
+- Added support for Unicode 8.0.
 
 1.13 - 2012/08/12
 - Added option to export fonts using fixed cell heights for easier post processing.
