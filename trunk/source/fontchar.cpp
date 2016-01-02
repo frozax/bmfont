@@ -1,6 +1,6 @@
 /*
    AngelCode Bitmap Font Generator
-   Copyright (c) 2004-2014 Andreas Jonsson
+   Copyright (c) 2004-2016 Andreas Jonsson
   
    This software is provided 'as-is', without any express or implied 
    warranty. In no event will the authors be held liable for any 
@@ -628,7 +628,18 @@ int CFontChar::DrawGlyphFromBitmap(HDC dc, int ch, int fontHeight, int fontAscen
 			WCHAR buf[2];
 			int length = acUtility::EncodeUTF16(ch, (unsigned char*)buf, 0);
 
-			TextOutW(dc, extraWidth-abc.abcA, 0, buf, length/2);
+			// Use GetCharacterPlacement/ExtTextOut instead of TextOut to avoid 
+			// internal language specific processing done by TextOut
+			//TextOutW(dc, extraWidth-abc.abcA, 0, buf, length/2);
+			GCP_RESULTSW results;
+			WCHAR glyphs[2] = {0};
+			memset(&results, 0, sizeof(GCP_RESULTSW));
+			results.lStructSize = sizeof(GCP_RESULTSW);
+			results.lpGlyphs = glyphs;
+			results.nGlyphs = 2;
+			GetCharacterPlacementW(dc, buf, length / 2, 0, &results, 0);
+			ExtTextOutW(dc, extraWidth - abc.abcA, 0, ETO_GLYPH_INDEX, NULL, glyphs, 1, NULL);
+
 /*
 			// Testing different ways of rendering
 			// All of them have the same problem of clipping glyphs that go above or below the cell

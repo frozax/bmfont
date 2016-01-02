@@ -1,6 +1,6 @@
 /*
    AngelCode Bitmap Font Generator
-   Copyright (c) 2004-2014 Andreas Jonsson
+   Copyright (c) 2004-2016 Andreas Jonsson
   
    This software is provided 'as-is', without any express or implied 
    warranty. In no event will the authors be held liable for any 
@@ -459,7 +459,18 @@ void CCharWin::DrawUnicode(HDC dc, RECT &rc, TEXTMETRIC &tm)
 				{
 					WCHAR ch[2];
 					int length = acUtility::EncodeUTF16(idx, (unsigned char*)ch, 0);
-					TextOutW(dc, x*rc.right/16 + cx, y*rc.bottom/16+cy, ch, length/2);
+					
+					// Use GetCharacterPlacement/ExtTextOut instead of TextOut to avoid 
+					// internal language specific processing done by TextOut
+					//TextOutW(dc, x*rc.right/16 + cx, y*rc.bottom/16+cy, ch, length/2);
+					GCP_RESULTSW results;
+					memset(&results, 0, sizeof(GCP_RESULTSW));
+					WCHAR glyphs[2] = {0};
+					results.lStructSize = sizeof(GCP_RESULTSW);
+					results.lpGlyphs = glyphs;
+					results.nGlyphs = 2;
+					GetCharacterPlacementW(dc, ch, length / 2, 0, &results, 0);
+					ExtTextOutW(dc, x*rc.right / 16 + cx, y*rc.bottom / 16 + cy, ETO_GLYPH_INDEX, NULL, glyphs, 1, NULL);
 				}
 
 				if( fontGen->IsImage(idx) )
