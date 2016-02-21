@@ -1,6 +1,6 @@
 /*
    AngelCode Tool Box Library
-   Copyright (c) 2012-2014 Andreas Jonsson
+   Copyright (c) 2012-2016 Andreas Jonsson
   
    This software is provided 'as-is', without any express or implied 
    warranty. In no event will the authors be held liable for any 
@@ -25,6 +25,7 @@
    andreas@angelcode.com
 */
 
+// 2016-02-21  Fixes for 64bit
 // 2014-06-16  Updated to support build both for unicode and multibyte applications
 // 2013-06-15  Fixed GetFullPath() to handle relative base paths
 // 2013-06-15  Fixed crash in GetRelativePath() when both paths refer to same directory
@@ -43,7 +44,7 @@ string ReplacePathSlashes(const string &path)
 	string tmp(path);
 
 	// Replace all backslashes with forward slashes
-	int pos;
+	size_t pos;
 	while( (pos = tmp.find("\\")) != string::npos )
 		tmp[pos] = '/';
 
@@ -82,7 +83,7 @@ string GetFullPath(const string &base, const string &relative)
 
 	// Get the drive letter from the base path
 	string drive, path;
-	int pos = b.find(":");
+	size_t pos = b.find(":");
 	if( pos != string::npos )
 	{
 		drive = b.substr(0, pos);

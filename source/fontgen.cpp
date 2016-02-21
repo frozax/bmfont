@@ -1,6 +1,6 @@
 /*
    AngelCode Bitmap Font Generator
-   Copyright (c) 2004-2014 Andreas Jonsson
+   Copyright (c) 2004-2016 Andreas Jonsson
   
    This software is provided 'as-is', without any express or implied 
    warranty. In no event will the authors be held liable for any 
@@ -264,7 +264,7 @@ int CFontGen::UpdateIconImage(int oldId, int id, const char *file, int xoffset, 
 
 int CFontGen::GetIconImageCount()
 {
-	return iconImages.size();
+	return (int)iconImages.size();
 }
 
 int CFontGen::GetIconImageInfo(int n, string &filename, int &id, int &xoffset, int &yoffset, int &advance)
@@ -1017,7 +1017,7 @@ cImage *CFontGen::GetPageImage(int page, int channel)
 
 int CFontGen::GetNumPages()
 {
-	return pages.size();
+	return (int)pages.size();
 }
 
 string CFontGen::GetFontName() const
@@ -1028,7 +1028,7 @@ string CFontGen::GetFontName() const
 unsigned int CFontGen::GetNumUnicodeSubsets()
 {
 	if( useUnicode )
-		return subsets.size();
+		return (unsigned int)subsets.size();
 
 	return 0;
 }
@@ -1214,7 +1214,7 @@ int CFontGen::CreatePage()
 	page->SetIntendedFormat(outBitDepth, fourChnlPacked, alphaChnl, redChnl, greenChnl, blueChnl);
 	pages.push_back(page);
 
-	return pages.size() - 1;
+	return (int)pages.size() - 1;
 }
 
 // Internal
@@ -1959,9 +1959,9 @@ int CFontGen::SaveFont(const char *szFile)
 		{
 			// Write the header
 			if( fontDescFormat == 0 )
-				fprintf(f, "kernings count=%d\r\n", pairs.size());
+				fprintf(f, "kernings count=%d\r\n", (int)pairs.size());
 			else if( fontDescFormat == 1 )
-				fprintf(f, "  <kernings count=\"%d\">\r\n", pairs.size());
+				fprintf(f, "  <kernings count=\"%d\">\r\n", (int)pairs.size());
 			else if( fontDescFormat == 2 )
 			{
 				fputc(5, f);
