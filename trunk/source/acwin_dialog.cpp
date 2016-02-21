@@ -1,6 +1,6 @@
 /*
    AngelCode Tool Box Library
-   Copyright (c) 2004-2014 Andreas Jonsson
+   Copyright (c) 2004-2016 Andreas Jonsson
   
    This software is provided 'as-is', without any express or implied 
    warranty. In no event will the authors be held liable for any 
@@ -26,6 +26,7 @@
 */
 
 
+// 2016-02-21  Fixes for Win64
 // 2014-06-16  DoModal now takes an integer representing the dialog resource
 // 2014-06-16  Prepared the code to work for both unicode and multibyte applications
 
@@ -114,7 +115,7 @@ int CDialog::Subclass(HWND newHWnd)
 	if( hWnd ) return EWND_ALREADY_ATTACHED;
 	if( FromHandle(newHWnd) ) return EWND_OTHER_IS_ALREADY_ATTACHED;
 
-	originalProc = (WNDPROC)SetWindowLongPtr(newHWnd, DWL_DLGPROC, (LONG_PTR)DlgProc);
+	originalProc = (WNDPROC)SetWindowLongPtr(newHWnd, DWLP_DLGPROC, (LONG_PTR)DlgProc);
 
 	Attach(newHWnd);
 

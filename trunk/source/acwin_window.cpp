@@ -1,6 +1,6 @@
 /*
    AngelCode Tool Box Library
-   Copyright (c) 2004-2014 Andreas Jonsson
+   Copyright (c) 2004-2016 Andreas Jonsson
   
    This software is provided 'as-is', without any express or implied 
    warranty. In no event will the authors be held liable for any 
@@ -25,6 +25,7 @@
    andreas@angelcode.com
 */
 
+// 2016-02-21  Fixes for Win64
 // 2014-06-17  Removed dependency on Windows.h in header
 // 2014-06-16  Prepared the code to work for both unicode and multibyte applications
 // 2014-06-16  Added ConvertTCharToUtf8 and ConvertUtf8ToTChar
@@ -500,8 +501,8 @@ void CWindow::HideSystemMenuButton()
 	SetWindowLong(hWnd, GWL_EXSTYLE, WS_EX_DLGMODALFRAME);
 
 	// Remove the icon handles to hide the menu button
-	SetClassLong(hWnd, GCL_HICON, NULL);
-	SetClassLong(hWnd, GCL_HICONSM, NULL);
+	SetClassLong(hWnd, GCLP_HICON, NULL);
+	SetClassLong(hWnd, GCLP_HICONSM, NULL);
 
 	// Update the style cache so that the window can be redrawn correctly
 	SetWindowPos(hWnd, 0, 0, 0, 0, 0,  SWP_FRAMECHANGED|SWP_NOSIZE|SWP_NOMOVE);

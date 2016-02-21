@@ -1,6 +1,6 @@
 /*
    AngelCode Tool Box Library
-   Copyright (c) 2004-2014 Andreas Jonsson
+   Copyright (c) 2004-2016 Andreas Jonsson
   
    This software is provided 'as-is', without any express or implied 
    warranty. In no event will the authors be held liable for any 
@@ -25,6 +25,7 @@
    andreas@angelcode.com
 */
 
+// 2016-02-21 Fixes for Win64
 // 2014-06-15 Support compiling for both unicode and multibyte Windows
 // 2011-08-23 Added column parameter to Get/SetItemText
 // 2011-08-23 Added SetEditColumn
@@ -111,9 +112,9 @@ LRESULT CListView::MsgProc(UINT msg, WPARAM wParam, LPARAM lParam)
 			// Convert the mouse position to the parent window client coordinates
 			POINT pt = {LOWORD(lParam), HIWORD(lParam)};
 			ClientToScreen(hWnd, &pt);
-			ScreenToClient((HWND)GetWindowLong(hWnd, GWL_HWNDPARENT), &pt);
+			ScreenToClient((HWND)GetWindowLong(hWnd, GWLP_HWNDPARENT), &pt);
 			lParam = (pt.x&0xFFFF) + ((pt.y&0xFFFF)<<16);
-			return SendMessage((HWND)GetWindowLong(hWnd, GWL_HWNDPARENT), msg, wParam, lParam);
+			return SendMessage((HWND)GetWindowLong(hWnd, GWLP_HWNDPARENT), msg, wParam, lParam);
 		}
 		return 0;
 

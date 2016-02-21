@@ -1,6 +1,6 @@
 /*
    AngelCode Tool Box Library
-   Copyright (c) 2004-2014 Andreas Jonsson
+   Copyright (c) 2004-2016 Andreas Jonsson
   
    This software is provided 'as-is', without any express or implied 
    warranty. In no event will the authors be held liable for any 
@@ -26,6 +26,7 @@
 */
 
 
+// 2016-02-31  Corrected the typedefs on Win64
 // 2014-06-17  Removed dependency on Windows.h in header
 // 2014-06-16  SetMenu and SetAccelerator takes an integer representing the resource
 // 2014-06-16  Removed #include <windows.h> in this header to, instead it needs to be included where Windows API is used
@@ -53,9 +54,14 @@ typedef struct HMENU__ *HMENU;
 typedef struct HHOOK__ *HHOOK;
 typedef struct tagDRAWITEMSTRUCT DRAWITEMSTRUCT;
 typedef struct tagMSG MSG;
+#ifdef _WIN64
+typedef __int64 LONG_PTR;
+typedef unsigned __int64 UINT_PTR;
+#else
 typedef long LONG_PTR;
-typedef LONG_PTR LRESULT, LPARAM;
 typedef unsigned int UINT_PTR;
+#endif
+typedef LONG_PTR LRESULT, LPARAM;
 typedef UINT_PTR WPARAM;
 typedef LRESULT (__stdcall* WNDPROC)(HWND, unsigned int, WPARAM, LPARAM);
 #ifndef _TCHAR_DEFINED
