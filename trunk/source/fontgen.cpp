@@ -1192,7 +1192,7 @@ ofstream trace;
 // Internal
 int CFontGen::CreatePage()
 {
-	CFontPage *page = new CFontPage(this, pages.size(), outWidth, outHeight, spacingHoriz, spacingVert);
+	CFontPage *page = new CFontPage(this, (int)pages.size(), outWidth, outHeight, spacingHoriz, spacingVert);
 	if( page == 0 || !page->IsOK() )
 	{
 		stopWorking = true;
@@ -1595,7 +1595,7 @@ int CFontGen::SaveFont(const char *szFile)
 		return -1;
 
 	// Get the filename without path
-	int r = filename.rfind('\\');
+	size_t r = filename.rfind('\\');
 	string filenameonly;
 	if( r != -1 )
 		filenameonly = filename.substr(r+1);
@@ -1603,7 +1603,7 @@ int CFontGen::SaveFont(const char *szFile)
 		filenameonly = filename;
 		
 	if( outBitDepth != 32 ) fourChnlPacked = false;
-	int numPages = pages.size();
+	size_t numPages = pages.size();
 
 	// Determine the number of digits needed for the page file id
 	int numDigits = numPages > 1 ? int(log10(float(numPages-1))+1) : 1;
@@ -1613,20 +1613,20 @@ int CFontGen::SaveFont(const char *szFile)
 		fprintf(f, "<?xml version=\"1.0\"?>\r\n");
 		fprintf(f, "<font>\r\n");
 		fprintf(f, "  <info face=\"%s\" size=\"%d\" bold=\"%d\" italic=\"%d\" charset=\"%s\" unicode=\"%d\" stretchH=\"%d\" smooth=\"%d\" aa=\"%d\" padding=\"%d,%d,%d,%d\" spacing=\"%d,%d\" outline=\"%d\"/>\r\n", fontName.c_str(), fontSize, isBold, isItalic, useUnicode ? "" : GetCharSetName(charSet).c_str(), useUnicode, scaleH, useSmoothing, aa, paddingUp, paddingRight, paddingDown, paddingLeft, spacingHoriz, spacingVert, outlineThickness);
-		fprintf(f, "  <common lineHeight=\"%d\" base=\"%d\" scaleW=\"%d\" scaleH=\"%d\" pages=\"%d\" packed=\"%d\" alphaChnl=\"%d\" redChnl=\"%d\" greenChnl=\"%d\" blueChnl=\"%d\"/>\r\n", int(ceilf(height*float(scaleH)/100.0f)), int(ceilf(base*float(scaleH)/100.0f)), outWidth, outHeight, numPages, fourChnlPacked, alphaChnl, redChnl, greenChnl, blueChnl);
+		fprintf(f, "  <common lineHeight=\"%d\" base=\"%d\" scaleW=\"%d\" scaleH=\"%d\" pages=\"%d\" packed=\"%d\" alphaChnl=\"%d\" redChnl=\"%d\" greenChnl=\"%d\" blueChnl=\"%d\"/>\r\n", int(ceilf(height*float(scaleH)/100.0f)), int(ceilf(base*float(scaleH)/100.0f)), outWidth, outHeight, int(numPages), fourChnlPacked, alphaChnl, redChnl, greenChnl, blueChnl);
 
 		fprintf(f, "  <pages>\r\n");
-		for( int n = 0; n < numPages; n++ )
-			fprintf(f, "    <page id=\"%d\" file=\"%s_%0*d.%s\" />\r\n", n, filenameonly.c_str(), numDigits, n, textureFormat.c_str());
+		for( size_t n = 0; n < numPages; n++ )
+			fprintf(f, "    <page id=\"%d\" file=\"%s_%0*d.%s\" />\r\n", (int)n, filenameonly.c_str(), numDigits, (int)n, textureFormat.c_str());
 		fprintf(f, "  </pages>\r\n");
 	}
 	else if( fontDescFormat == 0 )
 	{
 		fprintf(f, "info face=\"%s\" size=%d bold=%d italic=%d charset=\"%s\" unicode=%d stretchH=%d smooth=%d aa=%d padding=%d,%d,%d,%d spacing=%d,%d outline=%d\r\n", fontName.c_str(), fontSize, isBold, isItalic, useUnicode ? "" : GetCharSetName(charSet).c_str(), useUnicode, scaleH, useSmoothing, aa, paddingUp, paddingRight, paddingDown, paddingLeft, spacingHoriz, spacingVert, outlineThickness);
-		fprintf(f, "common lineHeight=%d base=%d scaleW=%d scaleH=%d pages=%d packed=%d alphaChnl=%d redChnl=%d greenChnl=%d blueChnl=%d\r\n", int(ceilf(height*float(scaleH)/100.0f)), int(ceilf(base*float(scaleH)/100.0f)), outWidth, outHeight, numPages, fourChnlPacked, alphaChnl, redChnl, greenChnl, blueChnl);
+		fprintf(f, "common lineHeight=%d base=%d scaleW=%d scaleH=%d pages=%d packed=%d alphaChnl=%d redChnl=%d greenChnl=%d blueChnl=%d\r\n", int(ceilf(height*float(scaleH)/100.0f)), int(ceilf(base*float(scaleH)/100.0f)), outWidth, outHeight, int(numPages), fourChnlPacked, alphaChnl, redChnl, greenChnl, blueChnl);
 
-		for( int n = 0; n < numPages; n++ )
-			fprintf(f, "page id=%d file=\"%s_%0*d.%s\"\r\n", n, filenameonly.c_str(), numDigits, n, textureFormat.c_str());
+		for( size_t n = 0; n < numPages; n++ )
+			fprintf(f, "page id=%d file=\"%s_%0*d.%s\"\r\n", (int)n, filenameonly.c_str(), numDigits, (int)n, textureFormat.c_str());
 	}
 	else
 	{
@@ -1660,7 +1660,7 @@ int CFontGen::SaveFont(const char *szFile)
 		} info;
 #pragma pack(pop)
 
-		info.blockSize    = sizeof(info) + fontName.length() - 4;
+		info.blockSize    = int(sizeof(info) + fontName.length() - 4);
 		info.fontSize     = fontSize;
 		info.reserved     = 0;
 		info.bold         = isBold;
@@ -1707,7 +1707,7 @@ int CFontGen::SaveFont(const char *szFile)
 		common.base       = int(ceilf(base*float(scaleH)/100.0f));
 		common.scaleW     = outWidth;
 		common.scaleH     = outHeight;
-		common.pages      = numPages;
+		common.pages      = unsigned short(numPages);
 		common.reserved   = 0;
 		common.packed     = fourChnlPacked;
 		common.alphaChnl  = alphaChnl;
@@ -1720,12 +1720,12 @@ int CFontGen::SaveFont(const char *szFile)
 
 		// Write the page block
 		fputc(3, f);
-		int size = (filenameonly.length() + numDigits + 2 + textureFormat.length() + 1)*numPages;
+		int size = int((filenameonly.length() + numDigits + 2 + textureFormat.length() + 1)*numPages);
 		fwrite(&size, sizeof(size), 1, f);
 
-		for( int n = 0; n < numPages; n++ )
+		for( size_t n = 0; n < numPages; n++ )
 		{
-			fprintf(f, "%s_%0*d.%s", filenameonly.c_str(), numDigits, n, textureFormat.c_str());
+			fprintf(f, "%s_%0*d.%s", filenameonly.c_str(), numDigits, (int)n, textureFormat.c_str());
 			fputc(0, f);
 		}
 	}
@@ -1967,7 +1967,7 @@ int CFontGen::SaveFont(const char *szFile)
 				fputc(5, f);
 
 				// Determine the size of the block
-				int size = pairs.size()*10;
+				int size = (int)pairs.size()*10;
 				fwrite(&size, 4, 1, f);
 			}
 		}
@@ -2465,7 +2465,7 @@ int CFontGen::SelectCharsFromFile(const char *filename)
 		}
 
 		unsigned char buf[1024];
-		int remain = 0;
+		size_t remain = 0;
 		while( (cnt = fread(buf + remain, 1, 1024 - remain, f) + remain) )
 		{
 			UINT n = 0;
@@ -2503,7 +2503,7 @@ int CFontGen::SelectCharsFromFile(const char *filename)
 			if( n < cnt )
 			{
 				remain = cnt - n;
-				for( int l = 0; l < remain; l++ )
+				for( size_t l = 0; l < remain; l++ )
 				{
 					buf[l] = buf[n+l];
 				}

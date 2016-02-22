@@ -1,6 +1,6 @@
 /*
    AngelCode Bitmap Font Generator
-   Copyright (c) 2004-2014 Andreas Jonsson
+   Copyright (c) 2004-2016 Andreas Jonsson
   
    This software is provided 'as-is', without any express or implied 
    warranty. In no event will the authors be held liable for any 
@@ -38,7 +38,7 @@ using namespace std;
 const char *getArgValue(const char *cmdLine, string &value)
 {
 	cmdLine += strspn(cmdLine, " \t");
-	int end;
+	size_t end;
 	if( *cmdLine == '"' )
 	{
 		end = strcspn(++cmdLine, "\"");
@@ -65,7 +65,7 @@ bool processCmdLine(const char *cmdLine, string &configFile)
 
 	bool hasError = false;
 
-	int start = strspn(cmdLine, " \t");
+	size_t start = strspn(cmdLine, " \t");
 	if( start == 0 && *cmdLine == 0 )
 	{
 		// No arguments, open the GUI

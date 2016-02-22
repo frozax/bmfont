@@ -1,6 +1,6 @@
 /*
    AngelCode Tool Box Library
-   Copyright (c) 2007-2012 Andreas Jonsson
+   Copyright (c) 2007-2016 Andreas Jonsson
   
    This software is provided 'as-is', without any express or implied 
    warranty. In no event will the authors be held liable for any 
@@ -25,6 +25,7 @@
    andreas@angelcode.com
 */
 
+// 2016-02-21: Using fopen_s to please MSVC
 // 2012-04-02: Added support for CMYK when loading JPG
 
 #include <stdio.h>
@@ -63,7 +64,8 @@ int SaveJpg(const char *filename, Image &image, DWORD flags)
 		return E_INVALID_ARG;
 	}
 
-	FILE *f = fopen(filename, "wb");
+	FILE *f = 0;
+	fopen_s(&f, filename, "wb");
 	if( f == 0 )
 		return E_FILE_ERROR;
 
@@ -150,7 +152,8 @@ int LoadJpg(const char *filename, Image &image)
 	image.data = 0;
 
 	// Open the file
-	FILE *f = fopen(filename, "rb");
+	FILE *f = 0;
+	fopen_s(&f, filename, "rb");
 	if( f == 0 ) 
 		return E_FILE_ERROR;
 

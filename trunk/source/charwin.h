@@ -1,6 +1,6 @@
 /*
    AngelCode Bitmap Font Generator
-   Copyright (c) 2004-2014 Andreas Jonsson
+   Copyright (c) 2004-2016 Andreas Jonsson
   
    This software is provided 'as-is', without any express or implied 
    warranty. In no event will the authors be held liable for any 
@@ -83,7 +83,7 @@ protected:
 
 	int GetCharFromPos(int x, int y);
 
-    LRESULT MsgProc(UINT msg, WPARAM wParam, LPARAM lParam);
+	LRESULT MsgProc(UINT msg, WPARAM wParam, LPARAM lParam);
 
 	cImageWnd            *wnd;
 	acWindow::CListView  *listView;

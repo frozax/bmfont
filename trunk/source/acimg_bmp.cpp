@@ -1,6 +1,6 @@
 /*
    AngelCode Tool Box Library
-   Copyright (c) 2007 Andreas Jönsson
+   Copyright (c) 2007-2016 Andreas Jonsson
   
    This software is provided 'as-is', without any express or implied 
    warranty. In no event will the authors be held liable for any 
@@ -21,9 +21,11 @@
    3. This notice may not be removed or altered from any source 
       distribution.
   
-   Andreas Jönsson
+   Andreas Jonsson
    andreas@angelcode.com
 */
+
+// 2016-02-21 Using fopen_s to please MSVC
 
 #include <stdio.h>
 #include "acimg.h"
@@ -82,7 +84,8 @@ int SaveBmp(const char *filename, Image &image)
 		return E_FORMAT_NOT_SUPPORTED;
 	}
 
-	FILE *f = fopen(filename, "wb");
+	FILE *f = 0;
+	fopen_s(&f, filename, "wb");
 	if( f == 0 )
 		return E_FILE_ERROR;
 
@@ -160,7 +163,8 @@ int LoadBmp(const char *filename, Image &image)
 	image.numColours = 0;
 
 	// Open the file
-	FILE *f = fopen(filename, "rb");
+	FILE *f = 0;
+	fopen_s(&f, filename, "rb");
 	if( f == 0 ) 
 		return E_FILE_ERROR;
 

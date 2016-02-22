@@ -109,7 +109,7 @@
       <Culture>0x0416</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>Usp10.lib;comctl32.lib;libpng.lib;zlib.lib;libjpeg.lib;squish.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Usp10.lib;comctl32.lib;libpng16.lib;zlibstat.lib;jpeg.lib;libsquish.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>.\Debug/bmfont.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>libs\libpng;libs\zlib;libs\libjpeg;libs\squish;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -152,7 +152,7 @@
       <Culture>0x0416</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>Usp10.lib;comctl32.lib;libpng.lib;zlib.lib;libjpeg.lib;squish.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Usp10.lib;comctl32.lib;x64/libpng16.lib;x64/zlibstat.lib;x64/jpeg.lib;x64/libsquish.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>.\Debug/bmfont.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>libs\libpng;libs\zlib;libs\libjpeg;libs\squish;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>

@@ -1,6 +1,6 @@
 /*
    AngelCode Bitmap Font Generator
-   Copyright (c) 2004-2014 Andreas Jonsson
+   Copyright (c) 2004-2016 Andreas Jonsson
   
    This software is provided 'as-is', without any express or implied 
    warranty. In no event will the authors be held liable for any 
@@ -269,7 +269,7 @@ void CExportDlg::OnInit()
 
 void CExportDlg::OnPresetChange()
 {
-	int idx = SendDlgItemMessage(hWnd, IDC_PRESETS, CB_GETCURSEL, 0, 0);
+	int idx = (int)SendDlgItemMessage(hWnd, IDC_PRESETS, CB_GETCURSEL, 0, 0);
 	if( idx == 0 ) // Custom 
 		return;
 
@@ -290,7 +290,7 @@ void CExportDlg::OnTextureChange()
 	SendDlgItemMessage(hWnd, IDC_TEXTURE_COMPRESSION, CB_RESETCONTENT, 0, 0);
 
 	// Which texture format is chosen?
-	int idx = SendDlgItemMessage(hWnd, IDC_TEXTURE_FMT, CB_GETCURSEL, 0, 0);
+	int idx = (int)SendDlgItemMessage(hWnd, IDC_TEXTURE_FMT, CB_GETCURSEL, 0, 0);
 	if( idx != CB_ERR )
 	{
 		TCHAR buf[256];
@@ -354,12 +354,12 @@ void CExportDlg::GetOptions()
 	ConvertTCharToUtf8(buf, textureFormat);
 	textureFormat.resize(3);
 
-	textureCompression = SendDlgItemMessage(hWnd, IDC_TEXTURE_COMPRESSION, CB_GETCURSEL, 0, 0);
+	textureCompression = (int)SendDlgItemMessage(hWnd, IDC_TEXTURE_COMPRESSION, CB_GETCURSEL, 0, 0);
 
-	alphaChnl = SendDlgItemMessage(hWnd, IDC_ALPHA, CB_GETCURSEL, 0, 0);
-	redChnl   = SendDlgItemMessage(hWnd, IDC_RED,   CB_GETCURSEL, 0, 0);
-	greenChnl = SendDlgItemMessage(hWnd, IDC_GREEN, CB_GETCURSEL, 0, 0);
-	blueChnl  = SendDlgItemMessage(hWnd, IDC_BLUE,  CB_GETCURSEL, 0, 0);
+	alphaChnl = (int)SendDlgItemMessage(hWnd, IDC_ALPHA, CB_GETCURSEL, 0, 0);
+	redChnl   = (int)SendDlgItemMessage(hWnd, IDC_RED,   CB_GETCURSEL, 0, 0);
+	greenChnl = (int)SendDlgItemMessage(hWnd, IDC_GREEN, CB_GETCURSEL, 0, 0);
+	blueChnl  = (int)SendDlgItemMessage(hWnd, IDC_BLUE,  CB_GETCURSEL, 0, 0);
 
 	invA = IsDlgButtonChecked(hWnd, IDC_INV_A) ? true : false;
 	invR = IsDlgButtonChecked(hWnd, IDC_INV_R) ? true : false;

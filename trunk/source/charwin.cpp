@@ -210,10 +210,10 @@ void CCharWin::UpdateSubsetsSelection()
 		while( (item = listView->GetNextItem(item, LVNI_ALL)) >= 0 )
 		{
 			// Is subset selected?
-			int subset;
-			listView->GetItemParam(item, (LPARAM*)&subset);
+			LPARAM subset;
+			listView->GetItemParam(item, &subset);
 
-			int check = fontGen->IsSubsetSelected(subset)+1;
+			int check = fontGen->IsSubsetSelected((int)subset)+1;
 			if( listView->GetItemStateImage(item) != check )
 				listView->SetItemStateImage(item, check);
 		}
@@ -260,7 +260,7 @@ void CCharWin::PrepareView()
 
 	isPreparing = true;
 	if( fontGen->IsUsingUnicode() )
-    {
+	{
 		// Create the right hand list view with the unicode 
 		if( listView == 0 )
 		{
@@ -312,8 +312,8 @@ void CCharWin::PrepareView()
 			else
 			{
 				// Add all subsets up to the current
-				int subset;
-				listView->GetItemParam(lvi, (LPARAM*)&subset);
+				LPARAM subset;
+				listView->GetItemParam(lvi, &subset);
 
 				for( lastInLV++; lastInLV < subset; lastInLV++ )
 				{
@@ -326,7 +326,7 @@ void CCharWin::PrepareView()
 				}
 
 				// Should the current item be removed?
-				if( !fontGen->GetUnicodeSubset(subset)->available )
+				if( !fontGen->GetUnicodeSubset((unsigned int)subset)->available )
 					listView->DeleteItem(lvi--);
 			}
 		}
@@ -655,7 +655,7 @@ LRESULT CCharWin::MsgProc(UINT msg, WPARAM wParam, LPARAM lParam)
 			fontGen->SetSelected(ch, selectMode);
 
 			GetCharGridRect(&rc);
-			x = 16*LOWORD(lParam)/rc.right; 
+			x = 16*LOWORD(lParam)/rc.right;
 			y = 16*HIWORD(lParam)/rc.bottom;
 
 			box.left = x*rc.right/16 + 1;
@@ -789,10 +789,10 @@ LRESULT CCharWin::MsgProc(UINT msg, WPARAM wParam, LPARAM lParam)
 					int item = -1;
 					while( (item = listView->GetNextItem(item, LVNI_SELECTED)) != -1 )
 					{
-						int subset;
-						listView->GetItemParam(item, (LPARAM*)&subset);
-						fontGen->SelectSubset(subset, (LOWORD(wParam) == ID_POPUP_SELECTSUBSET));
-						int check = fontGen->IsSubsetSelected(subset) + 1; 
+						LPARAM subset;
+						listView->GetItemParam(item, &subset);
+						fontGen->SelectSubset((int)subset, (LOWORD(wParam) == ID_POPUP_SELECTSUBSET));
+						int check = fontGen->IsSubsetSelected((int)subset) + 1; 
 						if( listView->GetItemStateImage(item) != check )
 							listView->SetItemStateImage(item, check);
 					}
@@ -869,24 +869,26 @@ LRESULT CCharWin::MsgProc(UINT msg, WPARAM wParam, LPARAM lParam)
 					if( nm->uNewState & LVIS_FOCUSED )
 					{
 						// A new subset was selected
-						listView->GetItemParam(nm->iItem, (LPARAM*)&unicodeSubset);
+						LPARAM subset;
+						listView->GetItemParam(nm->iItem, &subset);
+						unicodeSubset = (int)subset;
 
 						// Redraw
 						Invalidate(FALSE);
 					}
 					if( (nm->uNewState & LVIS_STATEIMAGEMASK) != (nm->uOldState & LVIS_STATEIMAGEMASK) )
 					{
-						int subset;
-						listView->GetItemParam(nm->iItem, (LPARAM*)&subset);
+						LPARAM subset;
+						listView->GetItemParam(nm->iItem, &subset);
 						int state = listView->GetItemStateImage(nm->iItem);
-						if( fontGen->IsSubsetSelected(subset)+1 != state )
+						if( fontGen->IsSubsetSelected((int)subset)+1 != state )
 						{
 							// Don't update the selection if the listview is currently being prepared
 							if( !isPreparing ) 
-								fontGen->SelectSubset(subset, state != 1);
+								fontGen->SelectSubset((int)subset, state != 1);
 
 							// Update the state image
-							int check = fontGen->IsSubsetSelected(subset)+1;
+							int check = fontGen->IsSubsetSelected((int)subset)+1;
 							listView->SetItemStateImage(nm->iItem, check);
 
 							// Redraw if this is the current subset

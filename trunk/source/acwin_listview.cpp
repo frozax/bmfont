@@ -59,7 +59,7 @@ int CListView::Create(DWORD style, DWORD exStyle, RECT *rc, CWindow *parent, UIN
 	HWND parentWnd = parent ? parent->GetHandle() : 0;
 	HWND listView = CreateWindow(WC_LISTVIEW, __TEXT(""), 
 		style, rc->left, rc->top, rc->right - rc->left, rc->bottom - rc->top, 
-		parentWnd, (HMENU)id, GetModuleHandle(0), 0); 
+		parentWnd, (HMENU)size_t(id), GetModuleHandle(0), 0); 
 	if( Subclass(listView) < 0 ) 
 		return -1; 
 
@@ -112,9 +112,9 @@ LRESULT CListView::MsgProc(UINT msg, WPARAM wParam, LPARAM lParam)
 			// Convert the mouse position to the parent window client coordinates
 			POINT pt = {LOWORD(lParam), HIWORD(lParam)};
 			ClientToScreen(hWnd, &pt);
-			ScreenToClient((HWND)GetWindowLong(hWnd, GWLP_HWNDPARENT), &pt);
+			ScreenToClient((HWND)GetWindowLongPtr(hWnd, GWLP_HWNDPARENT), &pt);
 			lParam = (pt.x&0xFFFF) + ((pt.y&0xFFFF)<<16);
-			return SendMessage((HWND)GetWindowLong(hWnd, GWLP_HWNDPARENT), msg, wParam, lParam);
+			return SendMessage((HWND)GetWindowLongPtr(hWnd, GWLP_HWNDPARENT), msg, wParam, lParam);
 		}
 		return 0;
 
@@ -239,7 +239,7 @@ int CListView::GetItemParam(UINT item, LPARAM *param)
 
 int CListView::GetNextItem(int start, UINT flags)
 {
-	return SendMessage(hWnd, LVM_GETNEXTITEM, start, flags);
+	return (int)SendMessage(hWnd, LVM_GETNEXTITEM, start, flags);
 }
 
 void CListView::GetItemSubRect(UINT item, UINT col, RECT *rc)
@@ -256,7 +256,7 @@ void CListView::SetItemState(int item, UINT mask, UINT state)
 	lvi.mask = LVIF_STATE;
 	lvi.stateMask = mask;
 	lvi.state = state;
-	int ret = SendMessage(hWnd, LVM_SETITEMSTATE, item, (LPARAM)&lvi);
+	int ret = (int)SendMessage(hWnd, LVM_SETITEMSTATE, item, (LPARAM)&lvi);
 }
 
 void CListView::EnsureVisible(UINT item)
@@ -292,7 +292,7 @@ int CListView::GetItemText(UINT item, UINT column, string *text)
 	lvi.iSubItem = column;
 	lvi.pszText = buffer;
 	lvi.cchTextMax = 256;
-	int r = SendMessage(hWnd, LVM_GETITEMTEXT, item, (LPARAM)&lvi);
+	int r = (int)SendMessage(hWnd, LVM_GETITEMTEXT, item, (LPARAM)&lvi);
 
 	ConvertTCharToUtf8(buffer, *text);
 

@@ -63,7 +63,7 @@ string GetApplicationPath()
 	path = ReplacePathSlashes(path);
 
 	// Cut of the name of the application
-	int n = path.rfind("/");
+	size_t n = path.rfind("/");
 	path = path.substr(0, n+1);
 
 	return path;
@@ -77,7 +77,7 @@ string GetFullPath(const string &base, const string &relative)
 	// Make sure the base path doesn't contain a filename
 	if( b[b.size()-1] != '/' )
 	{
-		int pos = b.rfind("/");
+		size_t pos = b.rfind("/");
 		b = b.substr(0, pos+1);
 	}
 
@@ -134,7 +134,7 @@ string GetFullPath(const string &base, const string &relative)
 		pos = path.find("../");
 		if( pos != string::npos && pos > 1 )
 		{
-			int p2 = path.rfind("/", pos-2);
+			size_t p2 = path.rfind("/", pos-2);
 			path = path.substr(0, p2+1) + path.substr(pos+3);
 		}
 		else
@@ -162,13 +162,13 @@ string GetRelativePath(const string &base, const string &relative)
 	// Make sure the base path doesn't contain a filename and ends with /
 	if( b[b.size()-1] != '/' )
 	{
-		int pos = b.rfind("/");
+		size_t pos = b.rfind("/");
 		b = b.substr(0, pos+1);
 	}
 
 	// Get the drive letter from the base path
 	string drive, path;
-	int pos = b.find(":");
+	size_t pos = b.find(":");
 	if( pos != string::npos )
 	{
 		drive = b.substr(0, pos);
@@ -231,8 +231,8 @@ string GetRelativePath(const string &base, const string &relative)
 		// rel    = /a/b/e/f/
 		for(;;)
 		{
-			int pbase = path.find("/");
-			int prel  = pathRel.find("/");
+			size_t pbase = path.find("/");
+			size_t prel  = pathRel.find("/");
 
 			// Caseless comparison on Windows
 			// TODO: Linux uses case sensitive file names
@@ -251,7 +251,7 @@ string GetRelativePath(const string &base, const string &relative)
 		// base = c/d/
 		// rel  = e/f/
 		int count = 0;
-		int pos = 0;
+		size_t pos = 0;
 		for(;;)
 		{
 			pos = path.find("/", pos);

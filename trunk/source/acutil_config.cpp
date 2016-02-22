@@ -1,6 +1,6 @@
 /*
    AngelCode Tool Box Library
-   Copyright (c) 2008-2014 Andreas Jonsson
+   Copyright (c) 2008-2015 Andreas Jonsson
   
    This software is provided 'as-is', without any express or implied 
    warranty. In no event will the authors be held liable for any 
@@ -49,6 +49,9 @@ CConfig::~CConfig()
 {
 }
 
+//! \brief Loads the configuration from a text file
+//! \param[in] file The path and name of the file
+//! \returns A negative value upon error
 int CConfig::LoadConfigFile(const string &file)
 {
 #if defined(_MSC_VER) && _MSC_VER >= 1500
@@ -99,6 +102,9 @@ int CConfig::LoadConfigFile(const string &file)
 	return 0;
 }
 
+//! \brief Returns the number of times the attribute is repeated
+//! \param[in] name The name of the attribute
+//! \returns The number of times the attribute is repeated
 int CConfig::GetAttrCount(const char *name) const
 {
 	map<string, vector<string> >::const_iterator it = attrMap.find(name);
@@ -108,6 +114,15 @@ int CConfig::GetAttrCount(const char *name) const
 	return 0;
 }
 
+//! \brief Returns the value of the attribute as an integer
+//! \param[in] name The name of the attribute
+//! \param[out] value The value of the attribute
+//! \param[in] index The index of the attribute
+//! \param[in] defaultValue This value is returned if the attribute doesn't exist
+//! \returns true if the attribute was found
+//!
+//! If the value is written with a prefix of 'h' it will be interpreted as hexadecimal
+//! value, otherwise it will be interpreted as an ordinary decimal integer value.
 bool CConfig::GetAttrAsInt(const char *name, int &value, unsigned int index, int defaultValue) const
 {
 	map<string,vector<string> >::const_iterator it = attrMap.find(name);
@@ -129,6 +144,12 @@ bool CConfig::GetAttrAsInt(const char *name, int &value, unsigned int index, int
 	return false;
 }
 
+//! \brief Returns the value of the attribute as a float
+//! \param[in] name The name of the attribute
+//! \param[out] value The value of the attribute
+//! \param[in] index The index of the attribute
+//! \param[in] defaultValue This value is returned if the attribute doesn't exist
+//! \returns true if the attribute was found
 bool CConfig::GetAttrAsFloat(const char *name, float &value, unsigned int index, float defaultValue) const
 {
 	map<string,vector<string> >::const_iterator it = attrMap.find(name);
@@ -142,6 +163,12 @@ bool CConfig::GetAttrAsFloat(const char *name, float &value, unsigned int index,
 	return false;
 }
 
+//! \brief Returns the value of the attribute as a double
+//! \param[in] name The name of the attribute
+//! \param[out] value The value of the attribute
+//! \param[in] index The index of the attribute
+//! \param[in] defaultValue This value is returned if the attribute doesn't exist
+//! \returns true if the attribute was found
 bool CConfig::GetAttrAsDouble(const char *name, double &value, unsigned int index, double defaultValue) const
 {
 	map<string,vector<string> >::const_iterator it = attrMap.find(name);
@@ -155,6 +182,14 @@ bool CConfig::GetAttrAsDouble(const char *name, double &value, unsigned int inde
 	return false;
 }
 
+//! \brief Returns the value of the attribute as a bool
+//! \param[in] name The name of the attribute
+//! \param[out] value The value of the attribute
+//! \param[in] index The index of the attribute
+//! \param[in] defaultValue This value is returned if the attribute doesn't exist
+//! \returns true if the attribute was found
+//!
+//! The value is first interpreted as an integer, then if the value is 0 false will be returned, else true.
 bool CConfig::GetAttrAsBool(const char *name, bool &value, unsigned int index, bool defaultValue) const
 {
 	map<string,vector<string> >::const_iterator it = attrMap.find(name);
@@ -169,6 +204,14 @@ bool CConfig::GetAttrAsBool(const char *name, bool &value, unsigned int index, b
 	return false;
 }
 
+//! \brief Returns the value of the attribute as a string
+//! \param[in] name The name of the attribute
+//! \param[out] value The value of the attribute
+//! \param[in] index The index of the attribute
+//! \param[in] defaultValue This value is returned if the attribute doesn't exist
+//! \returns true if the attribute was found
+//!
+//! The returned string includes all characters after the '=' character up to, but excluding, the line break.
 bool CConfig::GetAttrAsString(const char *name, string &value, unsigned int index, const string &defaultValue) const
 {
 	map<string,vector<string> >::const_iterator it = attrMap.find(name);
@@ -182,11 +225,20 @@ bool CConfig::GetAttrAsString(const char *name, string &value, unsigned int inde
 	return false;
 }
 
+//! \brief Returns the number of distinct attributes
+//! \returns The number of distinct attributes
 int CConfig::GetNumberOfAttributes() const
 {
 	return int(attrMap.size());
 }
 
+//! \brief Returns the name of the attribute with given index
+//! \param[in] index The index of the attribute
+//! \param[out] name The name of the attribute
+//! \returns true if the index is value
+//!
+//! This method together with \ref GetNumberOfAttributes can be used
+//! to iterate over all of the attributes in the configuration file.
 bool CConfig::GetNameOfAttribute(int index, string &name) const
 {
 	map<string,vector<string> >::const_iterator it = attrMap.begin();
