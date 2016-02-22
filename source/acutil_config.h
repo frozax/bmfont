@@ -1,6 +1,6 @@
 /*
    AngelCode Tool Box Library
-   Copyright (c) 2008-2014 Andreas Jonsson
+   Copyright (c) 2008-2016 Andreas Jonsson
   
    This software is provided 'as-is', without any express or implied 
    warranty. In no event will the authors be held liable for any 
@@ -42,6 +42,28 @@
 namespace acUtility
 {
 
+//! \brief Load configurations from a text file with simple syntax
+//! 
+//! The CConfig class can be used to load configuration from a text file 
+//! with a simple syntax that resembles Windows .ini files.
+//!
+//! The configured attributes are stored as name/value pairs. The same name
+//! can be used multiple times to form an array of values.
+//!
+//! Example configuration:
+//!
+//! <pre>
+//!   # Different attributes and types
+//!   an_integer=1
+//!   a_float=3.14
+//!   a_string=hello world
+//!   a_hex_value=hBAADF00D
+//!
+//!   # An array of values can be formed by repeating the same name
+//!   element=1
+//!   element=2
+//!   element=3
+//! </pre>
 class CConfig
 {
 public:

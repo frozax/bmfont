@@ -387,7 +387,7 @@ int CFontChar::DrawGlyphFromOutline(HDC dc, int ch, int fontHeight, int fontAsce
 		SetWorldTransform(dc, &mtx);
 	}
 
-	PolyPolygon(dc, &points[0], &polyPointCounts[0], polyPointCounts.size());
+	PolyPolygon(dc, &points[0], &polyPointCounts[0], (int)polyPointCounts.size());
 
 	GdiFlush();
 

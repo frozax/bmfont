@@ -1,6 +1,6 @@
 /*
    AngelCode Tool Box Library
-   Copyright (c) 2007-2015 Andreas Jonsson
+   Copyright (c) 2007-2016 Andreas Jonsson
   
    This software is provided 'as-is', without any express or implied 
    warranty. In no event will the authors be held liable for any 
@@ -25,6 +25,8 @@
    andreas@angelcode.com
 */
 
+// 2016-02-21  Using fopen_s to please MSVC
+
 #include <png.h>
 #include <vector>
 #include <stdio.h>
@@ -48,7 +50,8 @@ int SavePng(const char *filename, Image &image)
 	png_structp png = 0;
 	png_infop   info = 0;
 	
-	FILE *f = fopen(filename, "wb");
+	FILE *f = 0;
+	fopen_s(&f, filename, "wb");
 	if( f == 0 )
 		return E_FILE_ERROR;
 
@@ -140,7 +143,8 @@ int LoadPng(const char *filename, Image &image)
 	image.data = 0;
 
 	// Open the file
-	FILE *f = fopen(filename, "rb");
+	FILE *f = 0;
+	fopen_s(&f, filename, "rb");
 	if( f == 0 ) 
 		return E_FILE_ERROR;
 
@@ -201,7 +205,7 @@ int LoadPng(const char *filename, Image &image)
 	UINT colorType = png_get_color_type(png, info);
 	image.width    = png_get_image_width(png, info);
 	image.height   = png_get_image_height(png, info);
-	image.pitch    = png_get_rowbytes(png, info);
+	image.pitch    = UINT(png_get_rowbytes(png, info));
 
 	// Validate image format
 	if( bitDepth != 8 )

@@ -1,6 +1,6 @@
 /*
    AngelCode Bitmap Font Generator
-   Copyright (c) 2004-2014 Andreas Jonsson
+   Copyright (c) 2004-2016 Andreas Jonsson
   
    This software is provided 'as-is', without any express or implied 
    warranty. In no event will the authors be held liable for any 
@@ -25,6 +25,8 @@
    andreas@angelcode.com
 */
 
+// 2016-02-21  Fixes for 64bit
+
 #include <stdarg.h>     // va_list, va_start(), etc
 #include <stdlib.h>     // strtod(), strtol()
 #include <assert.h>     // assert()
@@ -39,7 +41,7 @@ string acStringFormat(const char *format, ...)
 	va_start(args, format);
 
 	char tmp[256];
-	int r = _vsnprintf(tmp, 255, format, args);
+	int r = _vsnprintf_s(tmp, 255, 256, format, args);
 
 	if( r > 0 )
 	{
@@ -51,7 +53,7 @@ string acStringFormat(const char *format, ...)
 		string str; 
 		str.resize(n);
 
-		while( (r = _vsnprintf(&str[0], n, format, args)) < 0 )
+		while( (r = _vsnprintf_s(&str[0], n, n, format, args)) < 0 )
 		{
 			n *= 2;
 			str.resize(n);
@@ -72,7 +74,7 @@ double acStringScanDouble(const char *string, int *numScanned)
 	double res = ::strtod(string, &end);
 
 	if( numScanned )
-		*numScanned = end - string;
+		*numScanned = int(end - string);
 
 	return res;
 }
@@ -86,7 +88,7 @@ int acStringScanInt(const char *string, int base, int *numScanned)
 	int res = ::strtol(string, &end, base);
 
 	if( numScanned )
-		*numScanned = end - string;
+		*numScanned = int(end - string);
 
 	return res;
 }
@@ -100,7 +102,7 @@ acUINT acStringScanUInt(const char *string, int base, int *numScanned)
 	acUINT res = ::strtoul(string, &end, base);
 
 	if( numScanned )
-		*numScanned = end - string;
+		*numScanned = int(end - string);
 
 	return res;
 }

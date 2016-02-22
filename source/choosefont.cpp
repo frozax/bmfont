@@ -1,6 +1,6 @@
 /*
    AngelCode Bitmap Font Generator
-   Copyright (c) 2004-2014 Andreas Jonsson
+   Copyright (c) 2004-2016 Andreas Jonsson
   
    This software is provided 'as-is', without any express or implied 
    warranty. In no event will the authors be held liable for any 
@@ -140,7 +140,7 @@ void CChooseFont::OnFontChange()
 
 	SendDlgItemMessage(hWnd, IDC_CHARSET, CB_RESETCONTENT, 0, 0);
 
-	int idx = SendDlgItemMessage(hWnd, IDC_FONT, CB_GETCURSEL, 0, 0);
+	int idx = (int)SendDlgItemMessage(hWnd, IDC_FONT, CB_GETCURSEL, 0, 0);
 	if( idx != CB_ERR )
 	{
 		// Enumerate the charsets for the font
@@ -160,7 +160,7 @@ void CChooseFont::OnFontChange()
 
 	string str = GetCharSetName(charSet);
 	ConvertUtf8ToTChar(str, buf, 256);
-	int r = SendDlgItemMessage(hWnd, IDC_CHARSET, CB_SELECTSTRING, -1, (LPARAM)buf);
+	int r = (int)SendDlgItemMessage(hWnd, IDC_CHARSET, CB_SELECTSTRING, -1, (LPARAM)buf);
 	if( r == CB_ERR )
 		SendDlgItemMessage(hWnd, IDC_CHARSET, CB_SETCURSEL, 0, 0);
 }
@@ -302,7 +302,7 @@ int CALLBACK ChooseFontCallback(
 		return 1;
 
 	// Add font name to combobox
-	int idx = SendDlgItemMessage(dlg->GetHandle(), IDC_FONT, CB_FINDSTRINGEXACT, 0, (LPARAM)lpelfe->elfLogFont.lfFaceName);
+	int idx = (int)SendDlgItemMessage(dlg->GetHandle(), IDC_FONT, CB_FINDSTRINGEXACT, 0, (LPARAM)lpelfe->elfLogFont.lfFaceName);
 	if( idx == CB_ERR )
 		SendDlgItemMessage(dlg->GetHandle(), IDC_FONT, CB_ADDSTRING, 0, (LPARAM)lpelfe->elfLogFont.lfFaceName);
 
@@ -323,7 +323,7 @@ int CALLBACK ChooseFontCallback2(
 	// Add charset to combobox
 	TCHAR buf[256];
 	ConvertUtf8ToTChar(str, buf, 256);
-	int idx = SendDlgItemMessage(dlg->GetHandle(), IDC_CHARSET, CB_FINDSTRINGEXACT, 0, (LPARAM)buf);
+	int idx = (int)SendDlgItemMessage(dlg->GetHandle(), IDC_CHARSET, CB_FINDSTRINGEXACT, 0, (LPARAM)buf);
 	if( idx == CB_ERR )
 		SendDlgItemMessage(dlg->GetHandle(), IDC_CHARSET, CB_ADDSTRING, 0, (LPARAM)buf);
 

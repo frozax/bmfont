@@ -524,7 +524,7 @@ void ConvertTCharToUtf8(const TCHAR *buf, std::string &utf8)
 void ConvertUtf8ToTChar(const std::string &utf8, TCHAR *buf, size_t bufSize)
 {
 #ifdef _UNICODE
-	MultiByteToWideChar(CP_UTF8, 0, utf8.c_str(), -1, buf, bufSize);
+	MultiByteToWideChar(CP_UTF8, 0, utf8.c_str(), -1, buf, int(bufSize));
 #else
 	strcpy_s(buf, bufSize, utf8.c_str());
 #endif

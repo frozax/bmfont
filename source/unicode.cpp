@@ -531,7 +531,7 @@ int GetUnicodeGlyphIndex(HDC dc, SCRIPT_CACHE *sc, UINT ch)
 	{
 		// GetGlyphIndices seems to work better than ScriptShape in 
 		// the base plane. It reports less missing characters as existing
-		WCHAR buf[] = {ch};
+		WCHAR buf[] = {WCHAR(ch)};
 		WORD idx;
 		int r = fGetGlyphIndicesW(dc, buf, 1, &idx, GGI_MARK_NONEXISTING_GLYPHS);
 		if( r == GDI_ERROR || idx == 0xFFFF )
