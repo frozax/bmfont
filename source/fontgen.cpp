@@ -1220,9 +1220,15 @@ int CFontGen::CreatePage()
 // Internal
 void CFontGen::InternalGeneratePages()
 {
-	if( arePagesGenerated )
+	InternalPreGeneratePages();
+	InternalPostGeneratePages();
+}
+
+void CFontGen::InternalPreGeneratePages()
+{
+	if (arePagesGenerated)
 	{
-		status    = 0;
+		status = 0;
 		isWorking = false;
 		return;
 	}
@@ -1238,9 +1244,9 @@ void CFontGen::InternalGeneratePages()
 	bool didNotFit = false;
 	memset(noFit, 0, sizeof(noFit));
 
-	if( stopWorking )
+	if (stopWorking)
 	{
-		status    = 0;
+		status = 0;
 		isWorking = false;
 
 #ifdef TRACE_GENERATE
@@ -1251,7 +1257,7 @@ void CFontGen::InternalGeneratePages()
 		return;
 	}
 
-	const int maxChars = useUnicode ? maxUnicodeChar+1 : 256;
+	const int maxChars = useUnicode ? maxUnicodeChar + 1 : 256;
 
 #ifdef TRACE_GENERATE
 	trace << "There are " << iconImages.size() << " images" << endl;
@@ -1259,21 +1265,21 @@ void CFontGen::InternalGeneratePages()
 #endif
 
 	// Add the imported images to the character list
-	for( int n = 0; n < (signed)iconImages.size(); n++ )
+	for (int n = 0; n < (signed)iconImages.size(); n++)
 	{
 		int ch = iconImages[n]->id;
 		chars[ch] = new CFontChar();
 		chars[ch]->CreateFromImage(n, iconImages[n]->image, iconImages[n]->xoffset, iconImages[n]->yoffset, iconImages[n]->advance);
 
 #ifdef TRACE_GENERATE
-//		trace << "Character [" << ch << "] created from image" << endl;
-//		trace.flush();
+		//		trace << "Character [" << ch << "] created from image" << endl;
+		//		trace.flush();
 #endif
 
-		if( chars[ch]->m_height > 0 && chars[ch]->m_width > 0 )
+		if (chars[ch]->m_height > 0 && chars[ch]->m_width > 0)
 		{
-			if( (chars[ch]->m_height + paddingUp + paddingDown) > outHeight-spacingVert || 
-				(chars[ch]->m_width + paddingRight + paddingLeft) > outWidth-spacingHoriz )
+			if ((chars[ch]->m_height + paddingUp + paddingDown) > outHeight - spacingVert ||
+				(chars[ch]->m_width + paddingRight + paddingLeft) > outWidth - spacingHoriz)
 			{
 				didNotFit = true;
 				noFit[ch] = true;
@@ -1289,9 +1295,9 @@ void CFontGen::InternalGeneratePages()
 			}
 		}
 
-		if( stopWorking )
+		if (stopWorking)
 		{
-			status    = 0;
+			status = 0;
 			isWorking = false;
 
 #ifdef TRACE_GENERATE
@@ -1304,18 +1310,18 @@ void CFontGen::InternalGeneratePages()
 
 	// Draw each of the chars into individual images
 	HFONT font = CreateFont(0);
-	for( int n = 0; n < maxChars; n++ )
+	for (int n = 0; n < maxChars; n++)
 	{
-		if( !disabled[n] && selected[n] )
+		if (!disabled[n] && selected[n])
 		{
 			// Unless the image is taken by an imported icon
 			// Draw the character in a separate image
 			// Determine the dimensions of the character
-			if( chars[n] == 0 )
+			if (chars[n] == 0)
 			{
 				chars[n] = new CFontChar();
 				int r = chars[n]->DrawChar(font, n, this);
-				if( r < 0 )
+				if (r < 0)
 				{
 					// The character couldn't be drawn (probably due to out of memory)
 					outOfMemory = true;
@@ -1328,21 +1334,21 @@ void CFontGen::InternalGeneratePages()
 					trace.flush();
 #endif
 				}
-				if( outlineThickness && chars[n] )
+				if (outlineThickness && chars[n])
 					chars[n]->AddOutline(outlineThickness);
 
 #ifdef TRACE_GENERATE
-//		trace << "Character [" << n << "] was drawn" << endl;
-//		trace.flush();
+				//		trace << "Character [" << n << "] was drawn" << endl;
+				//		trace.flush();
 #endif
 
-				if( chars[n] && chars[n]->m_height > 0 && chars[n]->m_width > 0 )
+				if (chars[n] && chars[n]->m_height > 0 && chars[n]->m_width > 0)
 				{
-					if( (chars[n]->m_height + paddingUp + paddingDown) > outHeight-spacingVert || 
-						(chars[n]->m_width + paddingRight + paddingLeft) > outWidth-spacingHoriz )
+					if ((chars[n]->m_height + paddingUp + paddingDown) > outHeight - spacingVert ||
+						(chars[n]->m_width + paddingRight + paddingLeft) > outWidth - spacingHoriz)
 					{
 						didNotFit = true;
-						noFit[n] = true;	
+						noFit[n] = true;
 
 						// Delete the character again so that it isn't considered again
 						delete chars[n];
@@ -1357,15 +1363,15 @@ void CFontGen::InternalGeneratePages()
 			}
 			counter++;
 
-			if( stopWorking )
+			if (stopWorking)
 			{
-				if( outOfMemory )
+				if (outOfMemory)
 				{
 					// Free up memory so the user can continue to use the app
 					ClearPages();
 				}
 
-				status    = 0;
+				status = 0;
 				isWorking = false;
 				DeleteObject(font);
 
@@ -1385,11 +1391,11 @@ void CFontGen::InternalGeneratePages()
 #endif
 
 	// Add the invalid char glyph
-	if( outputInvalidCharGlyph )
+	if (outputInvalidCharGlyph)
 	{
 		invalidCharGlyph = new CFontChar();
 		int r = invalidCharGlyph->DrawInvalidCharGlyph(font, this);
-		if( r < 0 )
+		if (r < 0)
 		{
 			// The character couldn't be drawn (probably due to out of memory)
 			outOfMemory = true;
@@ -1402,7 +1408,7 @@ void CFontGen::InternalGeneratePages()
 			trace.flush();
 #endif
 		}
-		if( outlineThickness && invalidCharGlyph )
+		if (outlineThickness && invalidCharGlyph)
 			invalidCharGlyph->AddOutline(outlineThickness);
 
 #ifdef TRACE_GENERATE
@@ -1410,9 +1416,9 @@ void CFontGen::InternalGeneratePages()
 		trace.flush();
 #endif
 
-		if( invalidCharGlyph &&
-			(invalidCharGlyph->m_height + paddingUp + paddingDown) > outHeight-spacingVert || 
-			(invalidCharGlyph->m_width + paddingRight + paddingLeft) > outWidth-spacingHoriz )
+		if (invalidCharGlyph &&
+			(invalidCharGlyph->m_height + paddingUp + paddingDown) > outHeight - spacingVert ||
+			(invalidCharGlyph->m_width + paddingRight + paddingLeft) > outWidth - spacingHoriz)
 		{
 			didNotFit = true;
 
@@ -1433,17 +1439,20 @@ void CFontGen::InternalGeneratePages()
 	status = 2;
 	counter = 0;
 
-	static CFontChar *ch[maxUnicodeChar+2];
-	int numChars = 0;
-	for( int n = 0; n < maxChars; n++ )
+	_numChars = 0;
+	for (int n = 0; n < maxChars; n++)
 	{
-		if( chars[n] )
-			ch[numChars++] = chars[n];
+		if (chars[n])
+			_ch[_numChars++] = chars[n];
 	}
 
-	if( outputInvalidCharGlyph && invalidCharGlyph )
-		ch[numChars++] = invalidCharGlyph;
+	if (outputInvalidCharGlyph && invalidCharGlyph)
+		_ch[_numChars++] = invalidCharGlyph;
+}
 
+void CFontGen::InternalPostGeneratePages()
+{
+	int numChars = _numChars;
 	// Create pages until there are no more chars
 	while( numChars > 0 )
 	{
@@ -1482,7 +1491,7 @@ void CFontGen::InternalGeneratePages()
 		trace.flush();
 #endif
 
-		pages[page]->AddChars(ch, numChars);
+		pages[page]->AddChars(_ch, numChars);
 
 #ifdef TRACE_GENERATE
 		trace << "Compacting list of remaining characters" << endl;
@@ -1492,15 +1501,15 @@ void CFontGen::InternalGeneratePages()
 		// Compact list
 		for( int n = 0; n < numChars; n++ )
 		{
-			if( ch[n] == 0 )
+			if( _ch[n] == 0 )
 			{
 				// Find the last char
 				for( numChars--; numChars > n; numChars-- )
 				{
-					if( ch[numChars] )
+					if( _ch[numChars] )
 					{
-						ch[n] = ch[numChars];
-						ch[numChars] = 0;
+						_ch[n] = _ch[numChars];
+						_ch[numChars] = 0;
 						break;
 					}
 				}

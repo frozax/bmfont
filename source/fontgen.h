@@ -195,6 +195,9 @@ protected:
 
 	static void __cdecl GenerateThread(CFontGen *fontGen);
 	void InternalGeneratePages();
+	void InternalPreGeneratePages();
+	void InternalPostGeneratePages();
+	static void GeneratePagesFromMultipleFontGens(std::vector<CFontGen*> &fgens);
 
 	bool fontChanged;
 
@@ -261,6 +264,9 @@ protected:
 	bool noFit[maxUnicodeChar+1];
 	CFontChar *chars[maxUnicodeChar+1];
 	CFontChar *invalidCharGlyph;
+	// chars to put in the final texture
+	CFontChar *_ch[maxUnicodeChar+2];
+	int _numChars;
 
 	// Font textures
 	vector<CFontPage *> pages;
