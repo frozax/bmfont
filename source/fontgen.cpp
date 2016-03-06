@@ -1457,6 +1457,8 @@ void CFontGen::PostGeneratePages(std::vector<CFontGen*> &fontgens)
 			auto fg = fontgens[i];
 			if (fg->chars[ic])
 			{
+				// will be used to get infos
+				chars[ic] = fg->chars[ic];
 				_ch[_numChars++] = fg->chars[ic];
 				break;
 			}
