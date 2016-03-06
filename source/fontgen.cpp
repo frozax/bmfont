@@ -1440,6 +1440,9 @@ void CFontGen::InternalPreGeneratePages()
 
 void CFontGen::PostGeneratePages(std::vector<CFontGen*> &fontgens)
 {
+	static CFontChar *ch[maxUnicodeChar + 2];
+	int numChars = 0;
+
 	const int maxChars = useUnicode ? maxUnicodeChar + 1 : 256;
 
 	if (fontgens.size() == 0)
@@ -1448,7 +1451,6 @@ void CFontGen::PostGeneratePages(std::vector<CFontGen*> &fontgens)
 	// Build a list of used characters
 	status = 2;
 	counter = 0;
-	_numChars = 0;
 	for (int ic = 0; ic < maxChars; ic++)
 	{
 		// combine list
@@ -1459,16 +1461,15 @@ void CFontGen::PostGeneratePages(std::vector<CFontGen*> &fontgens)
 			{
 				// will be used to get infos
 				chars[ic] = fg->chars[ic];
-				_ch[_numChars++] = fg->chars[ic];
+				ch[numChars++] = fg->chars[ic];
 				break;
 			}
 		}
 	}
 
 	if (outputInvalidCharGlyph && invalidCharGlyph)
-		_ch[_numChars++] = invalidCharGlyph;
+		ch[numChars++] = invalidCharGlyph;
 
-	int numChars = _numChars;
 	// Create pages until there are no more chars
 	while( numChars > 0 )
 	{
@@ -1507,7 +1508,7 @@ void CFontGen::PostGeneratePages(std::vector<CFontGen*> &fontgens)
 		trace.flush();
 #endif
 
-		pages[page]->AddChars(_ch, numChars);
+		pages[page]->AddChars(ch, numChars);
 
 #ifdef TRACE_GENERATE
 		trace << "Compacting list of remaining characters" << endl;
@@ -1517,15 +1518,15 @@ void CFontGen::PostGeneratePages(std::vector<CFontGen*> &fontgens)
 		// Compact list
 		for( int n = 0; n < numChars; n++ )
 		{
-			if( _ch[n] == 0 )
+			if( ch[n] == 0 )
 			{
 				// Find the last char
 				for( numChars--; numChars > n; numChars-- )
 				{
-					if( _ch[numChars] )
+					if( ch[numChars] )
 					{
-						_ch[n] = _ch[numChars];
-						_ch[numChars] = 0;
+						ch[n] = ch[numChars];
+						ch[numChars] = 0;
 						break;
 					}
 				}

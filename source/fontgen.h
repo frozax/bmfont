@@ -265,9 +265,6 @@ protected:
 	bool noFit[maxUnicodeChar+1];
 	CFontChar *chars[maxUnicodeChar+1];
 	CFontChar *invalidCharGlyph;
-	// chars to put in the final texture
-	CFontChar *_ch[maxUnicodeChar+2];
-	int _numChars;
 
 	// Font textures
 	vector<CFontPage *> pages;
