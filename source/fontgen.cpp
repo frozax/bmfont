@@ -1221,7 +1221,8 @@ int CFontGen::CreatePage()
 void CFontGen::InternalGeneratePages()
 {
 	InternalPreGeneratePages();
-	InternalPostGeneratePages();
+	vector<CFontGen*> fontgens;
+	PostGeneratePages(fontgens);
 }
 
 void CFontGen::InternalPreGeneratePages()
@@ -1435,23 +1436,36 @@ void CFontGen::InternalPreGeneratePages()
 
 	DeleteObject(font);
 
+}
+
+void CFontGen::PostGeneratePages(std::vector<CFontGen*> &fontgens)
+{
+	const int maxChars = useUnicode ? maxUnicodeChar + 1 : 256;
+
+	if (fontgens.size() == 0)
+		fontgens.push_back(this);
+
 	// Build a list of used characters
 	status = 2;
 	counter = 0;
-
 	_numChars = 0;
-	for (int n = 0; n < maxChars; n++)
+	for (int ic = 0; ic < maxChars; ic++)
 	{
-		if (chars[n])
-			_ch[_numChars++] = chars[n];
+		// combine list
+		for (int i = 0; i < fontgens.size(); i++)
+		{
+			auto fg = fontgens[i];
+			if (fg->chars[ic])
+			{
+				_ch[_numChars++] = fg->chars[ic];
+				break;
+			}
+		}
 	}
 
 	if (outputInvalidCharGlyph && invalidCharGlyph)
 		_ch[_numChars++] = invalidCharGlyph;
-}
 
-void CFontGen::InternalPostGeneratePages()
-{
 	int numChars = _numChars;
 	// Create pages until there are no more chars
 	while( numChars > 0 )
@@ -1533,7 +1547,7 @@ void CFontGen::GenerateThread(CFontGen *fontGen)
 	fontGen->InternalGeneratePages();
 }
 
-int CFontGen::GeneratePages(bool async)
+int CFontGen::GeneratePages(bool async, bool pre_gen_only)
 {
 	if( isWorking ) return -1;
 
@@ -1564,7 +1578,12 @@ int CFontGen::GeneratePages(bool async)
 	if( async )
 		_beginthread((void (*)(void*))GenerateThread, 0, this);	
 	else
-		InternalGeneratePages();
+	{
+		if (pre_gen_only)
+			InternalPreGeneratePages();
+		else
+			InternalGeneratePages();
+	}
 
 	return 0;
 }

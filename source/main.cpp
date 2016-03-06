@@ -56,12 +56,14 @@ const char *getArgValue(const char *cmdLine, string &value)
 }
 
 // Returns true if the GUI should be opened
-bool processCmdLine(const char *cmdLine, string &configFile)
+bool processCmdLine(const char *cmdLine, string &configFile_)
 {
 	string outputFile;
 	string textFile;
+	vector<string> configFiles;
+	vector<CFontGen*> fontGens;
 
-	configFile = CCharWin::GetDefaultConfig(); // Use the last configuration from the GUI as default
+	configFile_ = CCharWin::GetDefaultConfig(); // Use the last configuration from the GUI as default
 
 	bool hasError = false;
 
@@ -80,8 +82,14 @@ bool processCmdLine(const char *cmdLine, string &configFile)
 			cmdLine++;
 			if( *cmdLine == 'o' )
 				cmdLine = getArgValue(++cmdLine, outputFile);
-			else if( *cmdLine == 'c' )
-				cmdLine = getArgValue(++cmdLine, configFile);
+			else if (*cmdLine == 'c')
+			{
+				string conf;
+				cmdLine = getArgValue(++cmdLine, conf);
+				if (configFiles.size() == 0)
+					configFile_ = conf;
+				configFiles.push_back(conf);
+			}
 			else if( *cmdLine == 't' )
 				cmdLine = getArgValue(++cmdLine, textFile);
 			else
@@ -97,7 +105,7 @@ bool processCmdLine(const char *cmdLine, string &configFile)
 	{
 		// It may be a bmfc file, in which case we assume the app is being 
 		// opened with the intention to show the GUI and load that file
-		cmdLine = getArgValue(cmdLine, configFile);
+		cmdLine = getArgValue(cmdLine, configFile_);
 		return true;
 	}
 
@@ -112,24 +120,28 @@ bool processCmdLine(const char *cmdLine, string &configFile)
 		return false;
 	}
 
-	CFontGen *fontGen = new CFontGen();
-
-	cout << "Loading config." << endl;
-	fontGen->LoadConfiguration(configFile.c_str());
-
-	if( textFile != "" )
+	for (int i = 0; i < configFiles.size(); i++)
 	{
-		cout << "Selecting characters from file." << endl;
-		fontGen->SelectCharsFromFile(textFile.c_str());
+		auto fontGen = new CFontGen();
+		fontGen->LoadConfiguration(configFiles[i].c_str());
+		if( textFile != "" )
+		{
+			cout << "Selecting characters from file." << endl;
+			fontGen->SelectCharsFromFile(textFile.c_str());
+		}
+		fontGen->GeneratePages(false, true);
+		fontGens.push_back(fontGen);
 	}
 
-	cout << "Generating pages." << endl;
-	fontGen->GeneratePages(false);
+	fontGens[0]->PostGeneratePages(fontGens);
 
 	cout << "Saving font." << endl;
-	fontGen->SaveFont(outputFile.c_str());
+	fontGens[0]->SaveFont(outputFile.c_str());
 
-	delete fontGen;
+	/*for (int i = 0; i < fontGens.size(); i++)
+	{
+		delete fontGens[i];
+	}*/
 	cout << "Finished." << endl;
 
 	return false;

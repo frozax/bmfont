@@ -83,7 +83,7 @@ public:
 	const SSubset *GetUnicodeSubset(unsigned int set);
 
 	// Generate font pages asynchronously
-	int     GeneratePages(bool async = true);
+	int     GeneratePages(bool async = true, bool pre_gen_only = false);
 	void    Abort();
 	int     GetStatus();
 	int     GetStatusCounter();
@@ -184,6 +184,9 @@ public:
 	int     LoadConfiguration(const char *filename);
 	string  GetLastConfigFile() const;
 
+	// also use others font gens to find chars
+	void PostGeneratePages(std::vector<CFontGen*> &fontgens);
+
 protected:
 	friend class CFontPage;
 
@@ -196,8 +199,6 @@ protected:
 	static void __cdecl GenerateThread(CFontGen *fontGen);
 	void InternalGeneratePages();
 	void InternalPreGeneratePages();
-	void InternalPostGeneratePages();
-	static void GeneratePagesFromMultipleFontGens(std::vector<CFontGen*> &fgens);
 
 	bool fontChanged;
 
