@@ -214,7 +214,7 @@ void CChooseFont::EnumFonts()
 	lf.lfFaceName[0] = __TEXT('\0');
 	lf.lfPitchAndFamily = 0;
 
-	EnumFontFamiliesEx(dc, &lf, (FONTENUMPROCW)ChooseFontCallback, (LPARAM)this, 0);
+	EnumFontFamiliesEx(dc, &lf, (FONTENUMPROC)ChooseFontCallback, (LPARAM)this, 0);
 	ReleaseDC(0, dc);
 
 	// Remove the font file again
