@@ -187,6 +187,8 @@ public:
 	// also use others font gens to find chars
 	void PostGeneratePages(std::vector<CFontGen*> &fontgens);
 
+	void SetCheckExport(bool ce) { check_export = ce; }
+
 protected:
 	friend class CFontPage;
 
@@ -262,6 +264,9 @@ protected:
 	int  numCharsAvailable;
 	bool disabled[maxUnicodeChar+1];
 	bool selected[maxUnicodeChar+1];
+	// chars wished by user (and icons)
+	bool wished_in_save[maxUnicodeChar + 1];
+	bool check_export; // if true make sure all wished chars are saved
 	bool noFit[maxUnicodeChar+1];
 	CFontChar *chars[maxUnicodeChar+1];
 	CFontChar *invalidCharGlyph;

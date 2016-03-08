@@ -58,6 +58,7 @@ CFontGen::CFontGen()
 	status            = 0;
 	arePagesGenerated = false;
 	outOfMemory       = false;
+	check_export = false;
 
 	fontName               = "Arial";
 	charSet                = ANSI_CHARSET;
@@ -1465,6 +1466,12 @@ void CFontGen::PostGeneratePages(std::vector<CFontGen*> &fontgens)
 				break;
 			}
 		}
+		if (check_export && chars[ic] == nullptr && wished_in_save[ic])
+		{
+			char str[128];
+			sprintf(str, "Missing char %d !", ic);
+			MessageBox(NULL, str, str, MB_OK);
+		}
 	}
 
 	if (outputInvalidCharGlyph && invalidCharGlyph)
@@ -2317,6 +2324,9 @@ int CFontGen::LoadConfiguration(const char *filename)
 		}
 	}
 
+	// copy the array
+	memcpy(wished_in_save, _selected, sizeof(_selected));
+
 	for( int n = 0; n < config.GetAttrCount("icon"); n++ )
 	{
 		string line; config.GetAttrAsString("icon", line, n);
@@ -2338,6 +2348,7 @@ int CFontGen::LoadConfiguration(const char *filename)
 			{
 				c = end+2;
 				id = strtol(c, &c, 10);
+				wished_in_save[id] = true;
 				if( *c == ',' )
 				{
 					xoffset = strtol(c+1, &c, 10);
@@ -2443,8 +2454,10 @@ int CFontGen::LoadConfiguration(const char *filename)
 	Prepare();
 
 	int maxChars = useUnicode ? maxUnicodeChar+1 : 256;
-	for( int n = 0; n < maxChars; n++ )
+	for (int n = 0; n < maxChars; n++)
+	{
 		SetSelected(n, _selected[n]);
+	}
 
 	return 0;
 }

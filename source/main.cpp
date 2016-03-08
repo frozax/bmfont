@@ -75,12 +75,18 @@ bool processCmdLine(const char *cmdLine, string &configFile_)
 	}
 
 	cmdLine += start;
+	bool check_export = false;
 	if( *cmdLine == '-' )
 	{
 		while( *cmdLine == '-' )
 		{
 			cmdLine++;
-			if( *cmdLine == 'o' )
+			if (*cmdLine == 'e')
+			{
+				check_export = true;
+				cmdLine++;
+			}
+			else if( *cmdLine == 'o' )
 				cmdLine = getArgValue(++cmdLine, outputFile);
 			else if (*cmdLine == 'c')
 			{
@@ -123,6 +129,7 @@ bool processCmdLine(const char *cmdLine, string &configFile_)
 	for (int i = 0; i < configFiles.size(); i++)
 	{
 		auto fontGen = new CFontGen();
+		fontGen->SetCheckExport(check_export);
 		fontGen->LoadConfiguration(configFiles[i].c_str());
 		if( textFile != "" )
 		{
