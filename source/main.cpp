@@ -115,10 +115,12 @@ bool processCmdLine(const char *cmdLine, string &configFile_)
 		return true;
 	}
 
+	cout << "Hello" << endl;
+
 	// Attach to the console and assign the streams
-	AttachConsole(ATTACH_PARENT_PROCESS);
-	freopen("CONOUT$","w",stdout);
-	freopen("CONOUT$","w",stderr);
+	//AttachConsole(ATTACH_PARENT_PROCESS);
+	//freopen("CONOUT$","w",stdout);
+	//freopen("CONOUT$","w",stderr);
 
 	if( hasError || outputFile == "" )
 	{
@@ -149,7 +151,7 @@ bool processCmdLine(const char *cmdLine, string &configFile_)
 	{
 		delete fontGens[i];
 	}*/
-	cout << "Finished." << endl;
+	//cout << "Finished." << endl;
 
 	return false;
 }

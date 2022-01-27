@@ -1745,7 +1745,7 @@ int CFontGen::SaveFont(const char *szFile)
 		common.base       = int(ceilf(base*float(scaleH)/100.0f));
 		common.scaleW     = outWidth;
 		common.scaleH     = outHeight;
-		common.pages      = unsigned short(numPages);
+		common.pages      = (unsigned short)(numPages);
 		common.reserved   = 0;
 		common.packed     = fourChnlPacked;
 		common.alphaChnl  = alphaChnl;
@@ -2102,8 +2102,8 @@ int CFontGen::SaveFont(const char *szFile)
 			acImage::SaveTga(str.c_str(), image, textureCompression ? acImage::TGA_RLE : 0);
 		else if( textureFormat == "png" )
 			acImage::SavePng(str.c_str(), image);
-		else if( textureFormat == "dds" )
-			acImage::SaveDds(str.c_str(), image, textureCompression);
+		//else if( textureFormat == "dds" )
+		//	acImage::SaveDds(str.c_str(), image, textureCompression);
 	}
 
 	return 0;
